@@ -1,4 +1,9 @@
-export type BuiltInTransitionName = 'ink-reveal' | 'particle-shift' | 'melt';
+export type BuiltInTransitionName =
+  | 'ink-reveal'
+  | 'particle-shift'
+  | 'melt'
+  | 'prismatic-glass'
+  | 'silk-ribbons';
 export type TransitionName = BuiltInTransitionName | (string & {});
 export type TransitionBackend = 'webgl2' | 'webgpu' | 'ogl' | 'custom';
 export type Direction = -1 | 1;

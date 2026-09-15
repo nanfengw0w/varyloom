@@ -28,6 +28,8 @@ export {
   inkRevealTransition,
   meltTransition,
   particleShiftTransition,
+  prismaticGlassTransition,
+  silkRibbonsTransition,
 } from './transitions';
 export type {
   InkRevealOptions,
@@ -35,5 +37,9 @@ export type {
   ParticleEnterDirection,
   ParticleExitDirection,
   ParticleShiftOptions,
+  PrismaticGlassDirection,
+  PrismaticGlassOptions,
+  SilkRibbonsDirection,
+  SilkRibbonsOptions,
 } from './transitions';
 export type * from './types';

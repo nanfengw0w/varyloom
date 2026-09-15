@@ -1,6 +1,6 @@
 # Prismorph
 
-Extensible GPU-powered image transitions for the web. Prismorph ships with three transitions and one controller API for vanilla JavaScript, TypeScript, and React.
+Extensible GPU-powered image transitions for the web. Prismorph ships with five transitions and one controller API for vanilla JavaScript, TypeScript, and React.
 
 > Status: `0.1.0` review build. This package is not published yet.
 
@@ -9,6 +9,8 @@ Extensible GPU-powered image transitions for the web. Prismorph ships with three
 - `ink-reveal` — WebGL2 ink/noise reveal with a subtle grey-to-final-colour delay.
 - `particle-shift` — WebGPU particle dispersal and independent particle assembly, powered by `wgpu-kit`.
 - `melt` — OGL/GLSL fluid melt with chromatic aberration and pointer drift.
+- `prismatic-glass` — WebGL2 refractive glass front with spectral dispersion and caustic edge light.
+- `silk-ribbons` — WebGL2 curved silk strips with synchronized outgoing and incoming edges.
 - Shared timing, autoplay, keyboard, drag, events, responsive resize, cleanup, and fallback handling.
 - A transition registry designed for adding future effects without changing the controller.
 - ESM and TypeScript declarations, plus an optional React component.
@@ -104,6 +106,8 @@ import type {
   InkRevealOptions,
   MeltOptions,
   ParticleShiftOptions,
+  PrismaticGlassOptions,
+  SilkRibbonsOptions,
 } from 'prismorph';
 ```
 
@@ -112,6 +116,10 @@ import type {
 | `ink-reveal` | `edgeStrength`, `colorLag`, `debugField` |
 | `particle-shift` | `particleCount`, `particleSize`, `turbulence`, `exitDirection`, `enterDirection` |
 | `melt` | `intensity`, `scale`, `aberration`, `drift`, `overlayColor` |
+| `prismatic-glass` | `direction`, `refraction`, `dispersion`, `curvature`, `edgeGlow` |
+| `silk-ribbons` | `direction`, `ribbonCount`, `curl`, `stagger`, `sheen` |
+
+All five built-in effects also accept `imageFit: 'cover' | 'contain'`. Directional effects accept `direction: 'auto' | 'right' | 'left' | 'down' | 'up'`; `auto` follows next/previous navigation.
 
 For `particle-shift`, the entry side defaults to the opposite of the exit direction. Its simulation clock remains linear so dispersal and assembly keep their designed separation, while motion and image sampling are normalized for arbitrary container ratios. WebGPU support is checked before the effect mounts.
 
@@ -169,6 +177,8 @@ const unregister = registerTransition(defineTransition({
 - `ink-reveal`: WebGL2.
 - `melt`: WebGL.
 - `particle-shift`: WebGPU. If unavailable, Prismorph uses `fallbackEffect`.
+- `prismatic-glass`: WebGL2.
+- `silk-ribbons`: WebGL2.
 
 Cross-origin images must return appropriate CORS headers. For accessibility, reduced-motion preferences shorten transitions automatically.
 
