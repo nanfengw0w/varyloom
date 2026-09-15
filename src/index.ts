@@ -25,15 +25,20 @@ export {
 } from './registry';
 export {
   builtInTransitions,
+  burnThroughTransition,
   inkRevealTransition,
   meltTransition,
+  misregistrationTransition,
   particleShiftTransition,
   prismaticGlassTransition,
   silkRibbonsTransition,
 } from './transitions';
 export type {
+  BurnOrigin,
+  BurnThroughOptions,
   InkRevealOptions,
   MeltOptions,
+  MisregistrationOptions,
   ParticleEnterDirection,
   ParticleExitDirection,
   ParticleShiftOptions,

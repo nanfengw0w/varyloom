@@ -1,6 +1,6 @@
 # Prismorph
 
-Extensible GPU-powered image transitions for the web. Prismorph ships with five transitions and one controller API for vanilla JavaScript, TypeScript, and React.
+Extensible GPU-powered image transitions for the web. Prismorph ships with seven transitions and one controller API for vanilla JavaScript, TypeScript, and React.
 
 > Status: `0.1.0` review build. This package is not published yet.
 
@@ -11,6 +11,8 @@ Extensible GPU-powered image transitions for the web. Prismorph ships with five 
 - `melt` — OGL/GLSL fluid melt with chromatic aberration and pointer drift.
 - `prismatic-glass` — WebGL2 refractive glass front with spectral dispersion and caustic edge light.
 - `silk-ribbons` — WebGL2 curved silk strips with synchronized outgoing and incoming edges.
+- `misregistration` — WebGL2 RGB print plates with temporary halftone registration.
+- `burn-through` — WebGL2 noisy burn reveal with char, ember, smoke, sparks, and a configurable origin.
 - Shared timing, autoplay, keyboard, drag, events, responsive resize, cleanup, and fallback handling.
 - A transition registry designed for adding future effects without changing the controller.
 - ESM and TypeScript declarations, plus an optional React component.
@@ -103,8 +105,10 @@ The component destroys GPU resources, observers, animation frames, timers, and l
 
 ```ts
 import type {
+  BurnThroughOptions,
   InkRevealOptions,
   MeltOptions,
+  MisregistrationOptions,
   ParticleShiftOptions,
   PrismaticGlassOptions,
   SilkRibbonsOptions,
@@ -118,8 +122,10 @@ import type {
 | `melt` | `intensity`, `scale`, `aberration`, `drift`, `overlayColor` |
 | `prismatic-glass` | `direction`, `refraction`, `dispersion`, `curvature`, `edgeGlow` |
 | `silk-ribbons` | `direction`, `ribbonCount`, `curl`, `stagger`, `sheen` |
+| `misregistration` | `plateSpread`, `halftoneScale`, `paperTint`, `punch` |
+| `burn-through` | `origin`, `burnWidth`, `charDepth`, `roughness`, `smoke`, `emberColor` |
 
-All five built-in effects also accept `imageFit: 'cover' | 'contain'`. Directional effects accept `direction: 'auto' | 'right' | 'left' | 'down' | 'up'`; `auto` follows next/previous navigation.
+All seven built-in effects also accept `imageFit: 'cover' | 'contain'`. Directional effects accept `direction: 'auto' | 'right' | 'left' | 'down' | 'up'`; `auto` follows next/previous navigation. `burn-through` accepts `origin: 'pointer' | 'center' | readonly [number, number]`; tuple coordinates are normalized from `0` to `1`.
 
 For `particle-shift`, the entry side defaults to the opposite of the exit direction. Its simulation clock remains linear so dispersal and assembly keep their designed separation, while motion and image sampling are normalized for arbitrary container ratios. WebGPU support is checked before the effect mounts.
 
@@ -179,6 +185,8 @@ const unregister = registerTransition(defineTransition({
 - `particle-shift`: WebGPU. If unavailable, Prismorph uses `fallbackEffect`.
 - `prismatic-glass`: WebGL2.
 - `silk-ribbons`: WebGL2.
+- `misregistration`: WebGL2.
+- `burn-through`: WebGL2.
 
 Cross-origin images must return appropriate CORS headers. For accessibility, reduced-motion preferences shorten transitions automatically.
 

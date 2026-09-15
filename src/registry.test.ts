@@ -38,13 +38,15 @@ describe('TransitionRegistry', () => {
 });
 
 describe('built-in transitions', () => {
-  it('exposes all five stable transition names', () => {
+  it('exposes all seven stable transition names', () => {
     expect(builtInTransitions.map(({ name }) => name)).toEqual([
       'ink-reveal',
       'particle-shift',
       'melt',
       'prismatic-glass',
       'silk-ribbons',
+      'misregistration',
+      'burn-through',
     ]);
   });
 

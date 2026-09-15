@@ -3,7 +3,9 @@ export type BuiltInTransitionName =
   | 'particle-shift'
   | 'melt'
   | 'prismatic-glass'
-  | 'silk-ribbons';
+  | 'silk-ribbons'
+  | 'misregistration'
+  | 'burn-through';
 export type TransitionName = BuiltInTransitionName | (string & {});
 export type TransitionBackend = 'webgl2' | 'webgpu' | 'ogl' | 'custom';
 export type Direction = -1 | 1;
