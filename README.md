@@ -1,6 +1,6 @@
 # Prismorph
 
-Extensible GPU-powered image transitions for the web. Prismorph ships with seven transitions and one controller API for vanilla JavaScript, TypeScript, and React.
+Extensible GPU-powered image transitions for the web. Prismorph ships with ten transitions and one controller API for vanilla JavaScript, TypeScript, and React.
 
 > Status: `0.1.0` review build. This package is not published yet.
 
@@ -13,6 +13,9 @@ Extensible GPU-powered image transitions for the web. Prismorph ships with seven
 - `silk-ribbons` — WebGL2 curved silk strips with synchronized outgoing and incoming edges.
 - `misregistration` — WebGL2 RGB print plates with temporary halftone registration.
 - `burn-through` — WebGL2 noisy burn reveal with char, ember, smoke, sparks, and a configurable origin.
+- `rack-focus` — WebGL2 focus handoff with defocus, desaturation, exposure breathing, and local focus recovery.
+- `liquid-lens` — WebGL2 refractive droplets that grow and merge into the next image on a linear phase clock.
+- `torn-paper` — WebGL2 directional paper tear with layered cores, procedural fibers, curl, and cast shadow.
 - Shared timing, autoplay, keyboard, drag, events, responsive resize, cleanup, and fallback handling.
 - A transition registry designed for adding future effects without changing the controller.
 - ESM and TypeScript declarations, plus an optional React component.
@@ -107,11 +110,14 @@ The component destroys GPU resources, observers, animation frames, timers, and l
 import type {
   BurnThroughOptions,
   InkRevealOptions,
+  LiquidLensOptions,
   MeltOptions,
   MisregistrationOptions,
   ParticleShiftOptions,
   PrismaticGlassOptions,
+  RackFocusOptions,
   SilkRibbonsOptions,
+  TornPaperOptions,
 } from 'prismorph';
 ```
 
@@ -124,8 +130,11 @@ import type {
 | `silk-ribbons` | `direction`, `ribbonCount`, `curl`, `stagger`, `sheen` |
 | `misregistration` | `plateSpread`, `halftoneScale`, `paperTint`, `punch` |
 | `burn-through` | `origin`, `burnWidth`, `charDepth`, `roughness`, `smoke`, `emberColor` |
+| `rack-focus` | `blur`, `desaturation`, `exposureBreath`, `grain`, `focusPoint` |
+| `liquid-lens` | `dropCount`, `refraction`, `surfaceTension`, `ripple`, `dispersion`, `mergeSpeed`, `origin` |
+| `torn-paper` | `tearSeed`, `direction`, `layers`, `fiberWidth`, `shadowStrength`, `curl` |
 
-All seven built-in effects also accept `imageFit: 'cover' | 'contain'`. Directional effects accept `direction: 'auto' | 'right' | 'left' | 'down' | 'up'`; `auto` follows next/previous navigation. `burn-through` accepts `origin: 'pointer' | 'center' | readonly [number, number]`; tuple coordinates are normalized from `0` to `1`.
+All ten built-in effects also accept `imageFit: 'cover' | 'contain'`. Directional effects accept `direction: 'auto' | 'right' | 'left' | 'down' | 'up'`; `auto` follows next/previous navigation. Interactive point options accept `'pointer'`, `'center'`, or normalized `[x, y]` coordinates.
 
 For `particle-shift`, the entry side defaults to the opposite of the exit direction. Its simulation clock remains linear so dispersal and assembly keep their designed separation, while motion and image sampling are normalized for arbitrary container ratios. WebGPU support is checked before the effect mounts.
 
@@ -187,6 +196,9 @@ const unregister = registerTransition(defineTransition({
 - `silk-ribbons`: WebGL2.
 - `misregistration`: WebGL2.
 - `burn-through`: WebGL2.
+- `rack-focus`: WebGL2.
+- `liquid-lens`: WebGL2.
+- `torn-paper`: WebGL2.
 
 Cross-origin images must return appropriate CORS headers. For accessibility, reduced-motion preferences shorten transitions automatically.
 

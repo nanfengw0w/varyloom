@@ -38,7 +38,7 @@ describe('TransitionRegistry', () => {
 });
 
 describe('built-in transitions', () => {
-  it('exposes all seven stable transition names', () => {
+  it('exposes all ten stable transition names', () => {
     expect(builtInTransitions.map(({ name }) => name)).toEqual([
       'ink-reveal',
       'particle-shift',
@@ -47,12 +47,18 @@ describe('built-in transitions', () => {
       'silk-ribbons',
       'misregistration',
       'burn-through',
+      'rack-focus',
+      'liquid-lens',
+      'torn-paper',
     ]);
   });
 
-  it('keeps the particle simulation phase linear', () => {
-    const particle = builtInTransitions.find(({ name }) => name === 'particle-shift');
-    expect(particle?.phaseEasing).toBe('none');
+  it('keeps simulation and shader-owned phase clocks linear', () => {
+    const linearEffects = ['particle-shift', 'rack-focus', 'liquid-lens', 'torn-paper'];
+    for (const name of linearEffects) {
+      const transition = builtInTransitions.find((candidate) => candidate.name === name);
+      expect(transition?.phaseEasing).toBe('none');
+    }
   });
 
   it('returns an unregister function for custom global transitions', () => {

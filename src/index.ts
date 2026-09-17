@@ -27,16 +27,21 @@ export {
   builtInTransitions,
   burnThroughTransition,
   inkRevealTransition,
+  liquidLensTransition,
   meltTransition,
   misregistrationTransition,
   particleShiftTransition,
   prismaticGlassTransition,
+  rackFocusTransition,
   silkRibbonsTransition,
+  tornPaperTransition,
 } from './transitions';
 export type {
   BurnOrigin,
   BurnThroughOptions,
   InkRevealOptions,
+  LiquidLensOptions,
+  LiquidLensOrigin,
   MeltOptions,
   MisregistrationOptions,
   ParticleEnterDirection,
@@ -44,7 +49,11 @@ export type {
   ParticleShiftOptions,
   PrismaticGlassDirection,
   PrismaticGlassOptions,
+  RackFocusOptions,
+  RackFocusPoint,
   SilkRibbonsDirection,
   SilkRibbonsOptions,
+  TornPaperDirection,
+  TornPaperOptions,
 } from './transitions';
 export type * from './types';

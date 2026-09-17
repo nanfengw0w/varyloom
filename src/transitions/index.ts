@@ -1,22 +1,29 @@
 import { burnThroughTransition } from './burn-through';
 import { inkRevealTransition } from './ink-reveal';
+import { liquidLensTransition } from './liquid-lens';
 import { meltTransition } from './melt';
 import { misregistrationTransition } from './misregistration';
 import { particleShiftTransition } from './particle-shift';
 import { prismaticGlassTransition } from './prismatic-glass';
+import { rackFocusTransition } from './rack-focus';
 import { silkRibbonsTransition } from './silk-ribbons';
+import { tornPaperTransition } from './torn-paper';
 
 export {
   burnThroughTransition,
   inkRevealTransition,
+  liquidLensTransition,
   meltTransition,
   misregistrationTransition,
   particleShiftTransition,
   prismaticGlassTransition,
+  rackFocusTransition,
   silkRibbonsTransition,
+  tornPaperTransition,
 };
 export type { BurnOrigin, BurnThroughOptions } from './burn-through';
 export type { InkRevealOptions } from './ink-reveal';
+export type { LiquidLensOptions, LiquidLensOrigin } from './liquid-lens';
 export type { MeltOptions } from './melt';
 export type { MisregistrationOptions } from './misregistration';
 export type {
@@ -28,10 +35,12 @@ export type {
   PrismaticGlassDirection,
   PrismaticGlassOptions,
 } from './prismatic-glass';
+export type { RackFocusOptions, RackFocusPoint } from './rack-focus';
 export type {
   SilkRibbonsDirection,
   SilkRibbonsOptions,
 } from './silk-ribbons';
+export type { TornPaperDirection, TornPaperOptions } from './torn-paper';
 
 /** Ordered list used by the default registry and useful when creating a scoped registry. */
 export const builtInTransitions = [
@@ -42,4 +51,7 @@ export const builtInTransitions = [
   silkRibbonsTransition,
   misregistrationTransition,
   burnThroughTransition,
+  rackFocusTransition,
+  liquidLensTransition,
+  tornPaperTransition,
 ] as const;
