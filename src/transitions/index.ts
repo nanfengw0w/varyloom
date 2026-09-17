@@ -1,4 +1,6 @@
 import { burnThroughTransition } from './burn-through';
+import { chromaticDustTransition } from './chromatic-dust';
+import { fiberFlowTransition } from './fiber-flow';
 import { inkRevealTransition } from './ink-reveal';
 import { liquidLensTransition } from './liquid-lens';
 import { meltTransition } from './melt';
@@ -11,6 +13,8 @@ import { tornPaperTransition } from './torn-paper';
 
 export {
   burnThroughTransition,
+  chromaticDustTransition,
+  fiberFlowTransition,
   inkRevealTransition,
   liquidLensTransition,
   meltTransition,
@@ -22,6 +26,8 @@ export {
   tornPaperTransition,
 };
 export type { BurnOrigin, BurnThroughOptions } from './burn-through';
+export type { ChromaticDustDirection, ChromaticDustOptions } from './chromatic-dust';
+export type { FiberFlowDirection, FiberFlowOptions } from './fiber-flow';
 export type { InkRevealOptions } from './ink-reveal';
 export type { LiquidLensOptions, LiquidLensOrigin } from './liquid-lens';
 export type { MeltOptions } from './melt';
@@ -54,4 +60,6 @@ export const builtInTransitions = [
   rackFocusTransition,
   liquidLensTransition,
   tornPaperTransition,
+  chromaticDustTransition,
+  fiberFlowTransition,
 ] as const;

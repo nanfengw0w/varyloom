@@ -8,7 +8,9 @@ export type BuiltInTransitionName =
   | 'burn-through'
   | 'rack-focus'
   | 'liquid-lens'
-  | 'torn-paper';
+  | 'torn-paper'
+  | 'chromatic-dust'
+  | 'fiber-flow';
 export type TransitionName = BuiltInTransitionName | (string & {});
 export type TransitionBackend = 'webgl2' | 'webgpu' | 'ogl' | 'custom';
 export type Direction = -1 | 1;

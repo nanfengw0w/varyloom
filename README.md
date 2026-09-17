@@ -1,6 +1,6 @@
 # Prismorph
 
-Extensible GPU-powered image transitions for the web. Prismorph ships with ten transitions and one controller API for vanilla JavaScript, TypeScript, and React.
+Extensible GPU-powered image transitions for the web. Prismorph ships with twelve transitions and one controller API for vanilla JavaScript, TypeScript, and React.
 
 > Status: `0.1.0` review build. This package is not published yet.
 
@@ -16,6 +16,8 @@ Extensible GPU-powered image transitions for the web. Prismorph ships with ten t
 - `rack-focus` — WebGL2 focus handoff with defocus, desaturation, exposure breathing, and local focus recovery.
 - `liquid-lens` — WebGL2 refractive droplets that grow and merge into the next image on a linear phase clock.
 - `torn-paper` — WebGL2 directional paper tear with layered cores, procedural fibers, curl, and cast shadow.
+- `chromatic-dust` — WebGPU crystalline image fragments with spectral dispersion and independent outgoing/incoming fields.
+- `fiber-flow` — WebGPU texture-carrying fibers that pull the source apart and weave the target into place.
 - Shared timing, autoplay, keyboard, drag, events, responsive resize, cleanup, and fallback handling.
 - A transition registry designed for adding future effects without changing the controller.
 - ESM and TypeScript declarations, plus an optional React component.
@@ -109,6 +111,8 @@ The component destroys GPU resources, observers, animation frames, timers, and l
 ```ts
 import type {
   BurnThroughOptions,
+  ChromaticDustOptions,
+  FiberFlowOptions,
   InkRevealOptions,
   LiquidLensOptions,
   MeltOptions,
@@ -133,6 +137,8 @@ import type {
 | `rack-focus` | `blur`, `desaturation`, `exposureBreath`, `grain`, `focusPoint` |
 | `liquid-lens` | `dropCount`, `refraction`, `surfaceTension`, `ripple`, `dispersion`, `mergeSpeed`, `origin` |
 | `torn-paper` | `tearSeed`, `direction`, `layers`, `fiberWidth`, `shadowStrength`, `curl` |
+| `chromatic-dust` | `crystalCount`, `crystalSize`, `density`, `turbulence`, `dispersion`, `direction` |
+| `fiber-flow` | `strandCount`, `segmentsPerStrand`, `width`, `density`, `curl`, `glow`, `direction` |
 
 All ten built-in effects also accept `imageFit: 'cover' | 'contain'`. Directional effects accept `direction: 'auto' | 'right' | 'left' | 'down' | 'up'`; `auto` follows next/previous navigation. Interactive point options accept `'pointer'`, `'center'`, or normalized `[x, y]` coordinates.
 
@@ -199,6 +205,8 @@ const unregister = registerTransition(defineTransition({
 - `rack-focus`: WebGL2.
 - `liquid-lens`: WebGL2.
 - `torn-paper`: WebGL2.
+- `chromatic-dust`: WebGPU. If unavailable, Prismorph uses `fallbackEffect`.
+- `fiber-flow`: WebGPU. If unavailable, Prismorph uses `fallbackEffect`.
 
 Cross-origin images must return appropriate CORS headers. For accessibility, reduced-motion preferences shorten transitions automatically.
 

@@ -38,7 +38,7 @@ describe('TransitionRegistry', () => {
 });
 
 describe('built-in transitions', () => {
-  it('exposes all ten stable transition names', () => {
+  it('exposes all twelve stable transition names', () => {
     expect(builtInTransitions.map(({ name }) => name)).toEqual([
       'ink-reveal',
       'particle-shift',
@@ -50,11 +50,20 @@ describe('built-in transitions', () => {
       'rack-focus',
       'liquid-lens',
       'torn-paper',
+      'chromatic-dust',
+      'fiber-flow',
     ]);
   });
 
   it('keeps simulation and shader-owned phase clocks linear', () => {
-    const linearEffects = ['particle-shift', 'rack-focus', 'liquid-lens', 'torn-paper'];
+    const linearEffects = [
+      'particle-shift',
+      'rack-focus',
+      'liquid-lens',
+      'torn-paper',
+      'chromatic-dust',
+      'fiber-flow',
+    ];
     for (const name of linearEffects) {
       const transition = builtInTransitions.find((candidate) => candidate.name === name);
       expect(transition?.phaseEasing).toBe('none');

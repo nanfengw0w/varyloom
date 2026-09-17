@@ -26,6 +26,8 @@ export {
 export {
   builtInTransitions,
   burnThroughTransition,
+  chromaticDustTransition,
+  fiberFlowTransition,
   inkRevealTransition,
   liquidLensTransition,
   meltTransition,
@@ -39,6 +41,10 @@ export {
 export type {
   BurnOrigin,
   BurnThroughOptions,
+  ChromaticDustDirection,
+  ChromaticDustOptions,
+  FiberFlowDirection,
+  FiberFlowOptions,
   InkRevealOptions,
   LiquidLensOptions,
   LiquidLensOrigin,
