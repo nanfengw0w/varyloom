@@ -180,42 +180,83 @@ export class Varyloom<TData = unknown> implements VaryloomController<TData> {
     const definition = await this.resolveDefinition(name);
     if (this.destroyed || generation !== this.effectGeneration) return;
 
-    this.tween?.kill();
-    this.transitionActive = false;
-    this.preparing = false;
-    this.activeEffect?.destroy();
-    this.host.replaceChildren();
-
-    const effect = definition.create() as TransitionEffect<TData>;
-    const size = this.getSize();
-    const mergedOptions = { ...definition.defaults, ...effectOptions };
-    this.options.effectOptions = mergedOptions;
-    await effect.init({
-      host: this.host,
-      items: this.images,
-      ...size,
-      options: mergedOptions,
-      reportError: (error) => this.emit('error', { error }),
-    });
-    if (this.destroyed || generation !== this.effectGeneration) {
-      effect.destroy();
-      return;
-    }
-
-    this.activeEffect = effect;
-    this.activeDefinition = definition;
-    this.activeEffectName = definition.name;
-    this.requestedEffectName = name;
-    Object.assign(effect.canvas.style, {
-      display: 'block',
+    const stage = document.createElement('div');
+    Object.assign(stage.style, {
+      position: 'absolute',
+      inset: '0',
       width: '100%',
       height: '100%',
+      visibility: 'hidden',
+      pointerEvents: 'none',
     });
-    effect.resize(size.width, size.height, size.dpr);
-    await effect.prepare(this._currentIndex, this._currentIndex, 1);
-    this.motion.value = 1;
-    this.dirty = true;
-    this.emit('effectchange', { effect: definition.name, requestedEffect: name });
+    this.host.appendChild(stage);
+
+    let effect: TransitionEffect<TData> | undefined;
+    let activated = false;
+    try {
+      effect = definition.create() as TransitionEffect<TData>;
+      const size = this.getSize();
+      const mergedOptions = { ...definition.defaults, ...effectOptions };
+      await effect.init({
+        host: stage,
+        items: this.images,
+        ...size,
+        options: mergedOptions,
+        reportError: (error) => this.emit('error', { error }),
+      });
+      if (this.destroyed || generation !== this.effectGeneration) return;
+
+      Object.assign(effect.canvas.style, {
+        display: 'block',
+        width: '100%',
+        height: '100%',
+      });
+      effect.resize(size.width, size.height, size.dpr);
+      let preparedIndex: number;
+      do {
+        preparedIndex = this._currentIndex;
+        await effect.prepare(preparedIndex, preparedIndex, 1);
+        if (this.destroyed || generation !== this.effectGeneration) return;
+      } while (preparedIndex !== this._currentIndex);
+
+      this.tween?.kill();
+      this.transitionActive = false;
+      this.preparing = false;
+      this.pendingIndex = null;
+      this.targetIndex = this._currentIndex;
+      const previousEffect = this.activeEffect;
+      this.host.replaceChildren(stage);
+      stage.style.visibility = '';
+      stage.style.pointerEvents = '';
+      activated = true;
+      this.activeEffect = effect;
+      this.activeDefinition = definition;
+      this.activeEffectName = definition.name;
+      this.requestedEffectName = name;
+      this.options.effect = name;
+      this.options.effectOptions = mergedOptions;
+      this.motion.value = 1;
+      this.dirty = true;
+      try {
+        previousEffect?.destroy();
+      } catch (cause) {
+        const error = cause instanceof Error ? cause : new Error(String(cause));
+        this.emit('error', { error });
+      }
+      this.scheduleAutoplay();
+      this.emit('effectchange', { effect: definition.name, requestedEffect: name });
+    } finally {
+      if (!activated) {
+        try {
+          effect?.destroy();
+        } catch (cause) {
+          const error = cause instanceof Error ? cause : new Error(String(cause));
+          this.emit('error', { error });
+        } finally {
+          stage.remove();
+        }
+      }
+    }
   }
 
   private resize(): void {
@@ -405,11 +446,17 @@ export class Varyloom<TData = unknown> implements VaryloomController<TData> {
 
   setOptions(options: Partial<Omit<VaryloomOptions<TData>, 'items' | 'registry'>>): void {
     const previousEffect = this.requestedEffectName;
+    const previousEffectOptions = this.options.effectOptions;
     this.options = this.resolveOptions({ ...this.options, ...options, items: this.options.items });
     this.host.style.touchAction = this.options.draggable ? 'pan-y' : 'auto';
     this.host.tabIndex = this.options.keyboard ? 0 : -1;
     if (options.effect && options.effect !== previousEffect) {
-      void this.setEffect(options.effect, options.effectOptions ?? {});
+      this.options.effect = previousEffect;
+      this.options.effectOptions = previousEffectOptions;
+      void this.setEffect(options.effect, options.effectOptions ?? {}).catch((cause) => {
+        const error = cause instanceof Error ? cause : new Error(String(cause));
+        this.emit('error', { error });
+      });
     } else if (options.effectOptions) {
       this.options.effectOptions = {
         ...this.activeDefinition?.defaults,
