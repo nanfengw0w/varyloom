@@ -2,11 +2,22 @@
 
 English · [简体中文](./README.zh-CN.md)
 
-[API reference](./docs/API.md)
+[npm package](https://www.npmjs.com/package/varyloom) · [API reference](./docs/API.md)
+
+## [Explore the live playground ↗](https://nanfengw0w.github.io/varyloom/?lang=en)
+
+**Choose a transition, tune it live, and bring it into your project.** [Explore all 31 effects](https://nanfengw0w.github.io/varyloom/playground/?lang=en) · [Copy integration code](https://nanfengw0w.github.io/varyloom/playground/?lang=en&tab=code)
+
+| [Particle Shift](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=particle-shift) | [Meteor Wake](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=meteor-wake) | [Memory Mosaic](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=memory-mosaic) |
+| --- | --- | --- |
+| [![Particle Shift animated preview](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/particle-shift.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=particle-shift) | [![Meteor Wake animated preview](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/meteor-wake.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=meteor-wake) | [![Memory Mosaic animated preview](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/memory-mosaic.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=memory-mosaic) |
+
+The independent showcase installs the published `varyloom@0.1.0` package, without importing core source files. Particle Shift and Meteor Wake require WebGPU; the playground clearly reports when it falls back.
+
 
 Image transitions with room to grow. Varyloom brings 31 built-in effects under one controller API for JavaScript, TypeScript, and React—from quiet material and graphic transitions to GPU-driven particles.
 
-> **Pre-release:** Varyloom is being prepared for its first npm release. The install commands below are for use **after publication**. This repository contains the core library; the experimental demo pages and their images are not part of the package.
+The npm package is available at [npmjs.com/package/varyloom](https://www.npmjs.com/package/varyloom). The repository includes the core library and an independent website in `website/`; the website and its images are excluded from the npm package.
 
 ### Why Varyloom?
 
@@ -17,8 +28,6 @@ Image transitions with room to grow. Varyloom brings 31 built-in effects under o
 - **Extensible by design.** Register a custom transition without modifying the controller.
 
 ### Install
-
-After Varyloom is published:
 
 ```bash
 npm install varyloom

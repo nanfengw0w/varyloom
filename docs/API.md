@@ -1,8 +1,8 @@
 # API reference
 
-[Chinese](./API.zh-CN.md) · [README](../README.md)
+[Chinese](./API.zh-CN.md) · [README](../README.md) · [npm package](https://www.npmjs.com/package/varyloom)
 
-> Pre-release: Varyloom is being prepared for its first npm release. The import examples below apply after publication. This reference describes the current source API.
+Varyloom is published as [`varyloom`](https://www.npmjs.com/package/varyloom). This reference describes the published package API.
 
 Varyloom is a browser library. It needs an `HTMLElement` with a visible size, at least two images, and browser APIs such as `ResizeObserver` and `requestAnimationFrame`. GPU effects also need the matching graphics API. All times in the controller API are in seconds unless stated otherwise.
 
@@ -96,6 +96,358 @@ const meltOptions = {
 } satisfies MeltOptions;
 
 await slider.setEffect('melt', meltOptions);
+```
+
+## Built-in effect options
+
+The tables below list the options accepted by each effect through `effectOptions` or `setEffect(name, options)`. Defaults come from the corresponding transition definition. Numeric options have effect-specific scales; Varyloom does not impose a universal `0–1` range, so start near the listed default. A clamp is called out when the implementation applies one.
+
+All 31 built-in effects accept `imageFit`: `'cover'` fills the viewport and may crop the image; `'contain'` shows the whole image and leaves the effect's background visible around it. Defaults differ by effect and are shown below. Most direction options accept `'auto' | 'right' | 'left' | 'down' | 'up'`; `'auto'` follows slider navigation. Effects with additional direction values list them in their own table.
+
+<a id="effect-ink-reveal"></a>
+### Ink Reveal (`ink-reveal`) — `InkRevealOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `edgeStrength` | `number` | `0.72` | Ink/contour strength at the reveal edge. |
+| `colorLag` | `number` | `0.07` seconds | Delay before revealed pixels reach their final colour. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+| `debugField` | `boolean` | `false` | Show the procedural reveal field for tuning. |
+
+<a id="effect-melt"></a>
+### Melt (`melt`) — `MeltOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `intensity` | `number` | `0.55` | Overall melt/displacement strength. |
+| `scale` | `number` | `2.4` | Scale of the displacement field. |
+| `aberration` | `number` | `0.35` | RGB separation around refractive edges. |
+| `drift` | `number` | `0.4` | Amount of flow and drift. |
+| `overlayColor` | `string` | `'#000000'` | Transition overlay colour. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-gummy-squeeze"></a>
+### Gummy Squeeze (`gummy-squeeze`) — `GummySqueezeOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; there are no other public tuning options. |
+
+<a id="effect-flow-morph"></a>
+### Flow Morph (`flow-morph`) — `FlowMorphOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `strength` | `number` | `1` | Optical-flow distortion strength. |
+| `alpha` | `number` | `0.3` | Contribution of the incoming image during the blend. |
+| `flowBias` | `number` | `0.8` | Directional bias applied to the flow field. |
+| `aberration` | `number` | `0.25` | RGB colour-separation strength. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-rack-focus"></a>
+### Rack Focus (`rack-focus`) — `RackFocusOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `blur` | `number` | `0.68` | Maximum defocus around the image handoff. |
+| `desaturation` | `number` | `0.42` | Desaturation at peak defocus. |
+| `exposureBreath` | `number` | `0.34` | Exposure pulse around the handoff. |
+| `grain` | `number` | `0.18` | Temporary film grain while the images are defocused. |
+| `focusPoint` | `RackFocusPoint` | `'pointer'` | Focus recovery point: `'pointer'`, `'center'`, or normalized `readonly [x, y]` coordinates. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-liquid-lens"></a>
+### Liquid Lens (`liquid-lens`) — `LiquidLensOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `dropCount` | `number` | `9` | Number of independently seeded liquid drops. |
+| `refraction` | `number` | `0.58` | Optical displacement inside each liquid surface. |
+| `surfaceTension` | `number` | `0.62` | Tightness and visual thickness of the merged liquid boundary. |
+| `ripple` | `number` | `0.36` | Travelling surface ripple and caustic response. |
+| `dispersion` | `number` | `0.28` | RGB separation around the liquid rim. |
+| `mergeSpeed` | `number` | `0.54` | Rate at which separate drops expand into one liquid field. |
+| `origin` | `LiquidLensOrigin` | `'pointer'` | Attraction origin: `'pointer'`, `'center'`, or normalized `readonly [x, y]` coordinates. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-frequency-handoff"></a>
+### Frequency Handoff (`frequency-handoff`) — `FrequencyHandoffOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `stagger` | `number` | `0.65` | Timing offset between spatial-frequency bands. |
+| `order` | `'coarse-first' \| 'fine-first'` | `'coarse-first'` | Whether broad forms or fine detail hand off first. |
+| `bloom` | `number` | `0.45` | Glow at the handoff edge. |
+| `grain` | `number` | `0.4` | Grain strength. |
+| `dispersion` | `number` | `0.5` | Colour-dispersion strength. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-darkroom-develop"></a>
+### Darkroom Develop (`darkroom-develop`) — `DarkroomDevelopOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `softness` | `number` | `0.11` | Softness of the developing edge. |
+| `safelight` | `number` | `0.65` | Contribution of the darkroom safelight tint. |
+| `grain` | `number` | `0.5` | Film-grain strength. |
+| `sheen` | `number` | `0.6` | Developing-surface sheen. |
+| `direction` | `AxisDirection` | `'auto'` | Sweep direction; `'auto'` follows slider navigation. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-prismatic-glass"></a>
+### Prismatic Glass (`prismatic-glass`) — `PrismaticGlassOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `direction` | `PrismaticGlassDirection` | `'auto'` | Direction of the refractive front; the type matches `AxisDirection`. |
+| `refraction` | `number` | `0.48` | Optical displacement inside the glass band. |
+| `dispersion` | `number` | `0.32` | RGB spectral separation around the refractive edge. |
+| `curvature` | `number` | `0.58` | Procedural curvature of the moving front. |
+| `edgeGlow` | `number` | `0.46` | Rim-light and caustic-highlight intensity. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-silk-ribbons"></a>
+### Silk Ribbons (`silk-ribbons`) — `SilkRibbonsOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `direction` | `SilkRibbonsDirection` | `'auto'` | Exit direction of the old image; the new image enters from the opposite side. Type matches `AxisDirection`. |
+| `ribbonCount` | `number` | `44` | Number of independently delayed ribbons. |
+| `curl` | `number` | `0.72` | Cross-axis bending and axial flutter strength. |
+| `stagger` | `number` | `0.68` | Irregularity in the ribbon timing/order. |
+| `sheen` | `number` | `0.62` | Fold shading and warm specular highlight intensity. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-torn-paper"></a>
+### Torn Paper (`torn-paper`) — `TornPaperOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `tearSeed` | `number` | `1.4` | Stable seed for the main tear and smaller paper fibers. |
+| `direction` | `TornPaperDirection` | `'auto'` | Tear-front direction; type matches `AxisDirection`. |
+| `layers` | `number` | `2` | Number of visible paper-core layers around the tear. |
+| `fiberWidth` | `number` | `0.52` | Width and maximum reach of procedural paper fibers. |
+| `shadowStrength` | `number` | `0.64` | Shadow cast by the lifted paper edge onto the image below. |
+| `curl` | `number` | `0.46` | UV displacement and shading on the lifted paper lips. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-burn-through"></a>
+### Burn Through (`burn-through`) — `BurnThroughOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `origin` | `BurnOrigin` | `'pointer'` | Burn origin: `'center'`, `'pointer'`, or normalized `readonly [x, y]` coordinates. |
+| `burnWidth` | `number` | `0.42` | Width of the scorched transition edge. |
+| `charDepth` | `number` | `0.68` | Strength and reach of the carbonized edge. |
+| `roughness` | `number` | `0.58` | Irregularity of the advancing burn front. |
+| `smoke` | `number` | `0.35` | Procedural smoke above the burn front. |
+| `emberColor` | `string` | `'#db764e'` | Main colour used by embers and sparks. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-impasto-stroke"></a>
+### Impasto Stroke (`impasto-stroke`) — `ImpastoStrokeOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `bristles` | `number` | `70` | Number of visible brush-bristle details. |
+| `wetness` | `number` | `0.65` | Wet-paint body and texture. |
+| `gloss` | `number` | `0.7` | Surface-gloss strength. |
+| `bead` | `number` | `0.5` | Raised paint buildup along the stroke edge. |
+| `direction` | `AxisDirection` | `'auto'` | Brush-stroke sweep direction; `'auto'` follows navigation. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-holo-foil"></a>
+### Holo Foil (`holo-foil`) — `HoloFoilOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `foilWidth` | `number` | `0.16` | Width of the moving foil band. |
+| `filmDensity` | `number` | `7` | Foil-film texture density. |
+| `glitter` | `number` | `0.55` | Glitter-highlight intensity. |
+| `refraction` | `number` | `0.4` | Refraction/displacement strength in the foil. |
+| `edgeLight` | `number` | `0.6` | Lighting strength along the foil edge. |
+| `direction` | `AxisDirection` | `'auto'` | Foil sweep direction; `'auto'` follows navigation. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-lenticular-shift"></a>
+### Lenticular Shift (`lenticular-shift`) — `LenticularShiftOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `lensCount` | `number` | `42` | Number of lenticular lens bands. |
+| `refraction` | `number` | `0.55` | Refraction strength in the lens bands. |
+| `glint` | `number` | `0.7` | Highlight intensity as the bands move. |
+| `sheetSoftness` | `number` | `0.22` | Softness of the lens-sheet edges. |
+| `direction` | `AxisDirection` | `'auto'` | Band-sweep direction; `'auto'` follows navigation. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-zipper-cloth"></a>
+### Zipper Cloth (`zipper-cloth`) — `ZipperClothOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; zipper path and fold geometry are fixed by the effect. |
+
+<a id="effect-postcard-relay"></a>
+### Postcard Relay (`postcard-relay`) — `PostcardRelayOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; card movement is fixed by the effect. |
+
+<a id="effect-memory-mosaic"></a>
+### Memory Mosaic (`memory-mosaic`) — `MemoryMosaicOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; mosaic-grid layout is fixed by the effect. |
+
+<a id="effect-iris-shutter"></a>
+### Iris Shutter (`iris-shutter`) — `IrisShutterOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; shutter-blade count and motion are fixed by the effect. |
+
+<a id="effect-archive-seal"></a>
+### Archive Seal (`archive-seal`) — `ArchiveSealOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; seal artwork and stamp motion are fixed by the effect. |
+
+<a id="effect-contact-sheet"></a>
+### Contact Sheet (`contact-sheet`) — `ContactSheetOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; contact-sheet layout is fixed by the effect. |
+
+<a id="effect-type-aperture"></a>
+### Type Aperture (`type-aperture`) — `TypeApertureOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `word` | `string` | `'NEXT'` | Text used as the aperture mask. |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode. |
+
+<a id="effect-particle-shift"></a>
+### Particle Shift (`particle-shift`) — `ParticleShiftOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `particleCount` | `number` | `206976` | Number of particles; higher counts need more GPU resources. |
+| `particleSize` | `number` | `1` | Base particle size. |
+| `turbulence` | `number` | `1` | Turbulence applied to particle motion. |
+| `exitDirection` | `ParticleExitDirection \| 'auto'` | `'right'` | Old-image exit direction: `right`, `left`, `up`, `down`, or `auto`. |
+| `enterDirection` | `ParticleEnterDirection` | Opposite of `exitDirection` when omitted | New-image entry direction: `right`, `left`, `top`, or `bottom`. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-chromatic-dust"></a>
+### Chromatic Dust (`chromatic-dust`) — `ChromaticDustOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `crystalCount` | `number` | `30000` | Number of coloured dust crystals. |
+| `crystalSize` | `number` | `1.45` | Base crystal size. |
+| `density` | `number` | `0.78` | Spatial density of the crystals. |
+| `turbulence` | `number` | `0.62` | Turbulence applied to crystal motion. |
+| `dispersion` | `number` | `0.56` | Colour-dispersion strength. |
+| `direction` | `ChromaticDustDirection` | `'auto'` | `'auto'`, `'right'`, `'left'`, or `'radial'`. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-fiber-flow"></a>
+### Fiber Flow (`fiber-flow`) — `FiberFlowOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `strandCount` | `number` | `520` | Number of fiber strands. |
+| `segmentsPerStrand` | `number` | `64` | Number of segments in each strand. |
+| `width` | `number` | `1.55` | Fiber width. |
+| `density` | `number` | `0.66` | Fiber coverage density. |
+| `curl` | `number` | `0.6` | Amount of fiber curvature. |
+| `glow` | `number` | `0.64` | Glow around the fibers. |
+| `direction` | `FiberFlowDirection` | `'auto'` | `'auto'`, `'right'`, `'left'`, or `'down'`. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-meteor-wake"></a>
+### Meteor Wake (`meteor-wake`) — `MeteorWakeOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `spread` | `number` | `0.66` | Spread of the meteor wake. |
+| `turbulence` | `number` | `0.44` | Turbulence applied to wake particles. |
+| `glow` | `number` | `0.68` | Glow intensity of meteors and starlight. |
+| `afterglow` | `number` | `0.58` | Persistence/intensity of the fading wake. |
+| `particleCount` | `number` | Device-dependent: `32768` for coarse-pointer devices or `deviceMemory <= 4`; otherwise `65536` | Number of star particles; higher counts need more GPU resources. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-depth-flip"></a>
+### Depth Flip (`depth-flip`) — `DepthFlipOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `depth` | `number` | `0.72` | Depth displacement during the flip. |
+| `blur` | `number` | `0.72` | Blur as the image moves through screen depth. |
+| `stagger` | `number` | `0.18` | Timing offset between regions of the image. |
+| `perspective` | `number` | `2.15` | Perspective strength of the flip. |
+| `direction` | `DepthFlipDirection` | `'auto'` | `'auto'`, `'right'`, `'left'`, `'bottom'`, or `'top'`. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-contour-reveal"></a>
+### Contour Reveal (`contour-reveal`) — `ContourRevealOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `levels` | `number` | `9` | Number of contour levels. |
+| `lineInk` | `number` | `0.85` | Strength of the contour ink lines. |
+| `relief` | `number` | `0.55` | Shading strength of the terrain relief. |
+| `fillLag` | `number` | `0.12` | Delay of solid image fill behind the contour lines. |
+| `directionBias` | `number` | `0.35` | Bias of the reveal field along the sweep direction. |
+| `direction` | `AxisDirection` | `'auto'` | Contour sweep direction; `'auto'` follows navigation. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-drowsy-blinds"></a>
+### Drowsy Blinds (`drowsy-blinds`) — `DrowsyBlindsOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode; the effect uses a fixed 10-blind layout and exposes no other options. |
+
+<a id="effect-misregistration"></a>
+### Misregistration (`misregistration`) — `MisregistrationOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `plateSpread` | `number` | `0.72` | Offset distance between the RGB print plates. |
+| `halftoneScale` | `number` | `155` | Density of the halftone grid. |
+| `paperTint` | `string` | `'#eee7d8'` | Paper colour revealed through the temporary halftone pattern. |
+| `punch` | `number` | `0.46` | Scale-punch strength when the print plates register at the end. |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | Image fitting mode. |
+
+<a id="effect-vortex-portal"></a>
+### Vortex Portal (`vortex-portal`) — `VortexPortalOptions`
+
+| Option | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `twist` | `number` | `0.78` | Vortex distortion strength; clamped to a minimum of `0`. |
+| `originX` | `number` | `0.54` | Normalized horizontal vortex centre; clamped to `[0.05, 0.95]`. |
+| `originY` | `number` | `0.49` | Normalized vertical vortex centre; clamped to `[0.05, 0.95]`. |
+| `spinDirection` | `-1 \| 1` | `1` | Spin direction; `-1` and `1` rotate in opposite directions. |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | Image fitting mode. |
+
+Each effect's option interface can be imported separately. `createVaryloom` and React props currently type `effectOptions` as a generic record; use `satisfies` to check the fields at the call site:
+
+```ts
+import type { LiquidLensOptions } from 'varyloom';
+
+const liquidOptions = {
+  dropCount: 12,
+  origin: 'center',
+  imageFit: 'contain',
+} satisfies LiquidLensOptions;
+
+await slider.setEffect('liquid-lens', liquidOptions);
 ```
 
 ## Controller

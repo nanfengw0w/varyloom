@@ -2,11 +2,22 @@
 
 English · [简体中文](./CHANGELOG.zh-CN.md)
 
-All notable changes to Varyloom will be recorded here. Versions are listed when they are prepared for review; an entry does not mean the package has been published.
+All notable changes to Varyloom are recorded here. Unreleased changes are not included in the current npm package.
 
-## 0.1.0 — Unreleased
+## Unreleased
 
-Initial release candidate. **Varyloom has not been published to npm as of this draft.**
+### Fixed
+
+- Release controller resources when initialization fails, including owned images that finish loading after cancellation.
+
+### Website and documentation
+
+- Add the independent GitHub Pages showcase, typed React and vanilla JavaScript examples, and direct API links.
+- Destroy offscreen demo controllers and restore the selected image when the preview becomes visible again.
+
+## 0.1.0 — 2026-09-24
+
+Published on [npm](https://www.npmjs.com/package/varyloom/v/0.1.0). Source: [`51ed254`](https://github.com/nanfengw0w/varyloom/commit/51ed254f39d8c5e49b31bbbfeacd3d02708f0298), tagged [`v0.1.0`](https://github.com/nanfengw0w/varyloom/releases/tag/v0.1.0).
 
 ### Added
 

@@ -2,11 +2,22 @@
 
 [English](./CHANGELOG.md) · 简体中文
 
-这里记录 Varyloom 的重要变更。版本列入此文件表示已准备供审核，不代表已经发布。
+这里记录 Varyloom 的重要变更。未发布部分尚未包含在当前 npm 包中。
 
-## 0.1.0 — 尚未发布
+## 未发布
 
-首个候选版本。**截至本稿，Varyloom 尚未发布到 npm。**
+### 修复
+
+- 初始化失败时释放控制器资源，并回收取消之后才完成加载的自有图片资源。
+
+### 网站与文档
+
+- 新增独立的 GitHub Pages 演示站、带类型的 React 与原生 JavaScript 示例，以及效果 API 直达入口。
+- 演示画面离屏时销毁控制器，重新可见时恢复此前选中的图片。
+
+## 0.1.0 — 2026-09-24
+
+已发布到 [npm](https://www.npmjs.com/package/varyloom/v/0.1.0)。对应源码提交：[`51ed254`](https://github.com/nanfengw0w/varyloom/commit/51ed254f39d8c5e49b31bbbfeacd3d02708f0298)，版本标签：[`v0.1.0`](https://github.com/nanfengw0w/varyloom/releases/tag/v0.1.0)。
 
 ### 新增
 

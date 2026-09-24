@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.next/
+.vinext/
+*.tsbuildinfo
+.env*
+outputs/
+next-env.d.ts

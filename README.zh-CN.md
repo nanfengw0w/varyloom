@@ -2,11 +2,22 @@
 
 [English](./README.md) · 简体中文
 
-[API 接口文档](./docs/API.zh-CN.md)
+[npm 包](https://www.npmjs.com/package/varyloom) · [API 接口文档](./docs/API.zh-CN.md)
+
+## [在线体验 Varyloom ↗](https://nanfengw0w.github.io/varyloom/?lang=zh)
+
+**选择转场、实时调参，把喜欢的效果带进你的作品。** [浏览全部 31 种效果](https://nanfengw0w.github.io/varyloom/playground/?lang=zh) · [复制接入代码](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&tab=code)
+
+| [粒子迁移](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=particle-shift) | [流星尾迹](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=meteor-wake) | [记忆拼图](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=memory-mosaic) |
+| --- | --- | --- |
+| [![粒子迁移动态预览](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/particle-shift.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=particle-shift) | [![流星尾迹动态预览](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/meteor-wake.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=meteor-wake) | [![记忆拼图动态预览](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/memory-mosaic.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=memory-mosaic) |
+
+演示站独立安装已发布的 `varyloom@0.1.0`，不引用核心库源码。粒子迁移、流星尾迹需要 WebGPU；不支持时演示站会明确显示回退状态。
+
 
 Varyloom 是一套可扩展的图片转场库：31 种内置效果共用一套控制接口，可用于 JavaScript、TypeScript 和 React。从克制的材质与平面设计转场，到 GPU 驱动的粒子转场，都可以在同一个图库里切换。
 
-> **尚未发布：** Varyloom 正在准备首次 npm 发布。下方安装命令须在**发布后**使用。此仓库只包含核心库；实验性演示页面及其图片不会进入包。
+Varyloom 已发布到 [npmjs.com/package/varyloom](https://www.npmjs.com/package/varyloom)。仓库包含核心库及 `website/` 下的独立演示站；网站和素材不属于 npm 包。
 
 ### 为什么选择 Varyloom？
 
@@ -17,8 +28,6 @@ Varyloom 是一套可扩展的图片转场库：31 种内置效果共用一套�
 - **方便扩展。** 注册新转场无需修改控制器。
 
 ### 安装
-
-Varyloom 发布后运行：
 
 ```bash
 npm install varyloom

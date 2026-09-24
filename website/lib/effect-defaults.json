@@ -1,0 +1,302 @@
+{
+  "ink-reveal": {
+    "defaults": {
+      "edgeStrength": 0.72,
+      "colorLag": 0.07,
+      "imageFit": "cover",
+      "debugField": false
+    },
+    "backend": "webgl2"
+  },
+  "particle-shift": {
+    "defaults": {
+      "particleCount": 206976,
+      "particleSize": 1,
+      "turbulence": 1,
+      "exitDirection": "right",
+      "imageFit": "cover"
+    },
+    "backend": "webgpu"
+  },
+  "melt": {
+    "defaults": {
+      "intensity": 0.55,
+      "scale": 2.4,
+      "aberration": 0.35,
+      "drift": 0.4,
+      "overlayColor": "#000000",
+      "imageFit": "cover"
+    },
+    "backend": "ogl"
+  },
+  "prismatic-glass": {
+    "defaults": {
+      "direction": "auto",
+      "refraction": 0.48,
+      "dispersion": 0.32,
+      "curvature": 0.58,
+      "edgeGlow": 0.46,
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "silk-ribbons": {
+    "defaults": {
+      "direction": "auto",
+      "ribbonCount": 44,
+      "curl": 0.72,
+      "stagger": 0.68,
+      "sheen": 0.62,
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "misregistration": {
+    "defaults": {
+      "plateSpread": 0.72,
+      "halftoneScale": 155,
+      "paperTint": "#eee7d8",
+      "punch": 0.46,
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "burn-through": {
+    "defaults": {
+      "origin": "pointer",
+      "burnWidth": 0.42,
+      "charDepth": 0.68,
+      "roughness": 0.58,
+      "smoke": 0.35,
+      "emberColor": "#db764e",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "rack-focus": {
+    "defaults": {
+      "blur": 0.68,
+      "desaturation": 0.42,
+      "exposureBreath": 0.34,
+      "grain": 0.18,
+      "focusPoint": "pointer",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "liquid-lens": {
+    "defaults": {
+      "dropCount": 9,
+      "refraction": 0.58,
+      "surfaceTension": 0.62,
+      "ripple": 0.36,
+      "dispersion": 0.28,
+      "mergeSpeed": 0.54,
+      "origin": "pointer",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "torn-paper": {
+    "defaults": {
+      "tearSeed": 1.4,
+      "direction": "auto",
+      "layers": 2,
+      "fiberWidth": 0.52,
+      "shadowStrength": 0.64,
+      "curl": 0.46,
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "chromatic-dust": {
+    "defaults": {
+      "crystalCount": 30000,
+      "crystalSize": 1.45,
+      "density": 0.78,
+      "turbulence": 0.62,
+      "dispersion": 0.56,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgpu"
+  },
+  "fiber-flow": {
+    "defaults": {
+      "strandCount": 520,
+      "segmentsPerStrand": 64,
+      "width": 1.55,
+      "density": 0.66,
+      "curl": 0.6,
+      "glow": 0.64,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgpu"
+  },
+  "frequency-handoff": {
+    "defaults": {
+      "stagger": 0.65,
+      "order": "coarse-first",
+      "bloom": 0.45,
+      "grain": 0.4,
+      "dispersion": 0.5,
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "flow-morph": {
+    "defaults": {
+      "strength": 1,
+      "alpha": 0.3,
+      "flowBias": 0.8,
+      "aberration": 0.25,
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "darkroom-develop": {
+    "defaults": {
+      "softness": 0.11,
+      "safelight": 0.65,
+      "grain": 0.5,
+      "sheen": 0.6,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "impasto-stroke": {
+    "defaults": {
+      "bristles": 70,
+      "wetness": 0.65,
+      "gloss": 0.7,
+      "bead": 0.5,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "lenticular-shift": {
+    "defaults": {
+      "lensCount": 42,
+      "refraction": 0.55,
+      "glint": 0.7,
+      "sheetSoftness": 0.22,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "holo-foil": {
+    "defaults": {
+      "foilWidth": 0.16,
+      "filmDensity": 7,
+      "glitter": 0.55,
+      "refraction": 0.4,
+      "edgeLight": 0.6,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "contour-reveal": {
+    "defaults": {
+      "levels": 9,
+      "lineInk": 0.85,
+      "relief": 0.55,
+      "fillLag": 0.12,
+      "directionBias": 0.35,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "depth-flip": {
+    "defaults": {
+      "depth": 0.72,
+      "blur": 0.72,
+      "stagger": 0.18,
+      "perspective": 2.15,
+      "direction": "auto",
+      "imageFit": "cover"
+    },
+    "backend": "webgl2"
+  },
+  "meteor-wake": {
+    "defaults": {
+      "spread": 0.66,
+      "turbulence": 0.44,
+      "glow": 0.68,
+      "afterglow": 0.58,
+      "particleCount": 65536,
+      "imageFit": "cover"
+    },
+    "backend": "webgpu"
+  },
+  "drowsy-blinds": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "custom"
+  },
+  "gummy-squeeze": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "webgl2"
+  },
+  "postcard-relay": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "custom"
+  },
+  "zipper-cloth": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "webgl2"
+  },
+  "type-aperture": {
+    "defaults": {
+      "imageFit": "contain",
+      "word": "NEXT"
+    },
+    "backend": "custom"
+  },
+  "archive-seal": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "custom"
+  },
+  "contact-sheet": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "custom"
+  },
+  "vortex-portal": {
+    "defaults": {
+      "twist": 0.78,
+      "originX": 0.54,
+      "originY": 0.49,
+      "spinDirection": 1,
+      "imageFit": "contain"
+    },
+    "backend": "webgl2"
+  },
+  "memory-mosaic": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "custom"
+  },
+  "iris-shutter": {
+    "defaults": {
+      "imageFit": "contain"
+    },
+    "backend": "custom"
+  }
+}

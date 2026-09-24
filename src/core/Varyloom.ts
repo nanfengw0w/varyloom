@@ -66,7 +66,8 @@ export class Varyloom<TData = unknown> implements VaryloomController<TData> {
   private previousTime = performance.now();
   private startTime = performance.now();
   private autoplayTimer?: number;
-  private resizeObserver: ResizeObserver;
+  private resizeObserver?: ResizeObserver;
+  private readonly imageLoading = new AbortController();
   private effectGeneration = 0;
   private pointer = { x: 0.5, y: 0.5 };
   private drag = { active: false, startX: 0, width: 1, direction: 1 as Direction };
@@ -103,9 +104,14 @@ export class Varyloom<TData = unknown> implements VaryloomController<TData> {
     this.host.setAttribute('aria-roledescription', 'carousel');
     this.container.appendChild(this.host);
 
-    this.resizeObserver = new ResizeObserver(() => this.resize());
-    this.resizeObserver.observe(this.container);
-    this.bindInput();
+    try {
+      this.resizeObserver = new ResizeObserver(() => this.resize());
+      this.resizeObserver.observe(this.container);
+      this.bindInput();
+    } catch (cause) {
+      this.destroy();
+      throw cause;
+    }
     this.ready = this.initialize();
   }
 
@@ -135,16 +141,26 @@ export class Varyloom<TData = unknown> implements VaryloomController<TData> {
 
   private async initialize(): Promise<void> {
     try {
-      this.images = await loadItems(this.options.items, this.options.crossOrigin);
+      this.images = await loadItems(this.options.items, this.options.crossOrigin, this.imageLoading.signal);
+      if (this.destroyed) {
+        this.images.forEach((image) => image.release());
+        this.images = [];
+        return;
+      }
       await this.mountEffect(this.options.effect, this.options.effectOptions);
+      if (this.destroyed) return;
       this.startTime = performance.now();
       this.previousTime = this.startTime;
       this.frameId = requestAnimationFrame((time) => this.tick(time));
       this.scheduleAutoplay();
       this.emit('ready', { effect: this.activeEffectName, index: this._currentIndex });
     } catch (cause) {
+      if (this.destroyed) return;
       const error = cause instanceof Error ? cause : new Error(String(cause));
-      this.emit('error', { error });
+      // A rejected factory promise gives the caller no instance to dispose.
+      // Preserve that failure even if a listener or custom cleanup also throws.
+      try { this.emit('error', { error }); } catch { /* Keep the initialization error. */ }
+      try { this.destroy(); } catch { /* All cleanup is attempted by destroy(). */ }
       throw error;
     }
   }
@@ -579,10 +595,11 @@ export class Varyloom<TData = unknown> implements VaryloomController<TData> {
     if (this.destroyed) return;
     this.destroyed = true;
     this.effectGeneration += 1;
+    this.imageLoading.abort();
     cancelAnimationFrame(this.frameId);
     this.clearAutoplay();
     this.tween?.kill();
-    this.resizeObserver.disconnect();
+    this.resizeObserver?.disconnect();
     this.host.removeEventListener('pointerdown', this.handlePointerDown);
     this.host.removeEventListener('pointermove', this.handlePointerMove);
     this.host.removeEventListener('pointerup', this.handlePointerUp);
@@ -590,10 +607,17 @@ export class Varyloom<TData = unknown> implements VaryloomController<TData> {
     this.host.removeEventListener('keydown', this.handleKeyDown);
     this.host.removeEventListener('mouseenter', this.handleMouseEnter);
     this.host.removeEventListener('mouseleave', this.handleMouseLeave);
-    this.activeEffect?.destroy();
-    this.images.forEach((image) => image.release());
-    this.host.remove();
-    this.emit('destroy', {});
+    const errors: unknown[] = [];
+    const cleanup = (dispose: () => void) => {
+      try { dispose(); } catch (cause) { errors.push(cause); }
+    };
+    cleanup(() => this.activeEffect?.destroy());
+    this.activeEffect = undefined;
+    this.images.forEach((image) => cleanup(() => image.release()));
+    this.images = [];
+    cleanup(() => this.host.remove());
+    cleanup(() => this.emit('destroy', {}));
     this.listeners.clear();
+    if (errors.length > 0) throw errors[0];
   }
 }

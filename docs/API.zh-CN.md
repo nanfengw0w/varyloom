@@ -1,8 +1,8 @@
 # API 接口文档
 
-[English](./API.md) · [项目说明](../README.zh-CN.md)
+[English](./API.md) · [项目说明](../README.zh-CN.md) · [npm 包](https://www.npmjs.com/package/varyloom)
 
-> 尚未发布：Varyloom 正在准备首次 npm 发布。下文的包导入示例适用于发布后。本文记录当前源码中的接口。
+Varyloom 已发布为 [`varyloom`](https://www.npmjs.com/package/varyloom)。本文说明当前已发布包的接口。
 
 Varyloom 在浏览器中运行。容器须是具有可见尺寸的 `HTMLElement`，至少提供两张图片；运行环境还须具备 `ResizeObserver`、`requestAnimationFrame` 等浏览器 API。GPU 效果还需要相应的图形 API。除特别说明外，控制器中的时间单位均为秒。
 
@@ -96,6 +96,358 @@ const meltOptions = {
 } satisfies MeltOptions;
 
 await slider.setEffect('melt', meltOptions);
+```
+
+## 内置效果参数
+
+下面按效果分别列出可传给 `effectOptions` 或 `setEffect(name, options)` 的字段。表中的默认值来自对应的转场定义；标为“无”的字段不会被该效果读取。数值参数的含义和尺度因效果而异，库不会为所有数值统一规定 `0–1` 范围，请优先从默认值附近调整。只有代码明确钳制的字段会在说明中标出。
+
+`imageFit` 是所有 31 种内置效果共同支持的字段：`'cover'` 按视口填满图片（可能裁切），`'contain'` 完整显示图片（视口剩余处显示效果自身的底色）。各效果默认值不同，见下表。多数方向参数接受 `'auto' | 'right' | 'left' | 'down' | 'up'`；`'auto'` 跟随上一张到下一张的导航方向。效果若使用其他方向值，会在对应表中列出。
+
+<a id="effect-ink-reveal"></a>
+### Ink Reveal (`ink-reveal`) — `InkRevealOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `edgeStrength` | `number` | `0.72` | 显影边缘的墨迹/轮廓强度。 |
+| `colorLag` | `number` | `0.07` 秒 | 像素显现后到达最终颜色的延迟。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+| `debugField` | `boolean` | `false` | 显示程序化显影场，供调试参数使用。 |
+
+<a id="effect-melt"></a>
+### Melt (`melt`) — `MeltOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `intensity` | `number` | `0.55` | 融化/位移转场的总体强度。 |
+| `scale` | `number` | `2.4` | 位移场的尺度。 |
+| `aberration` | `number` | `0.35` | 边缘 RGB 色散强度。 |
+| `drift` | `number` | `0.4` | 画面流动与漂移幅度。 |
+| `overlayColor` | `string` | `'#000000'` | 转场叠加色。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-gummy-squeeze"></a>
+### Gummy Squeeze (`gummy-squeeze`) — `GummySqueezeOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式；该效果没有其他公开调节字段。 |
+
+<a id="effect-flow-morph"></a>
+### Flow Morph (`flow-morph`) — `FlowMorphOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `strength` | `number` | `1` | 光流形变强度。 |
+| `alpha` | `number` | `0.3` | 新图参与混合的强度。 |
+| `flowBias` | `number` | `0.8` | 光流方向/偏向影响。 |
+| `aberration` | `number` | `0.25` | RGB 色差强度。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-rack-focus"></a>
+### Rack Focus (`rack-focus`) — `RackFocusOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `blur` | `number` | `0.68` | 图片交接时的最大失焦程度。 |
+| `desaturation` | `number` | `0.42` | 失焦峰值时的去饱和强度。 |
+| `exposureBreath` | `number` | `0.34` | 交接过程中的曝光呼吸幅度。 |
+| `grain` | `number` | `0.18` | 失焦期间的临时胶片颗粒强度。 |
+| `focusPoint` | `RackFocusPoint` | `'pointer'` | 对焦恢复位置：`'pointer'`、`'center'` 或归一化坐标 `readonly [x, y]`。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-liquid-lens"></a>
+### Liquid Lens (`liquid-lens`) — `LiquidLensOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `dropCount` | `number` | `9` | 独立液滴数量。 |
+| `refraction` | `number` | `0.58` | 液滴内部的光学位移强度。 |
+| `surfaceTension` | `number` | `0.62` | 液滴合并边界的紧致度与厚度。 |
+| `ripple` | `number` | `0.36` | 表面波纹和焦散变化强度。 |
+| `dispersion` | `number` | `0.28` | 液滴边缘 RGB 色散。 |
+| `mergeSpeed` | `number` | `0.54` | 独立液滴扩张并连成液体区域的速度。 |
+| `origin` | `LiquidLensOrigin` | `'pointer'` | 液滴吸引中心：`'pointer'`、`'center'` 或归一化坐标 `readonly [x, y]`。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-frequency-handoff"></a>
+### Frequency Handoff (`frequency-handoff`) — `FrequencyHandoffOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `stagger` | `number` | `0.65` | 不同空间频率层之间的错开程度。 |
+| `order` | `'coarse-first' \| 'fine-first'` | `'coarse-first'` | 先交接大尺度轮廓还是细节。 |
+| `bloom` | `number` | `0.45` | 交接边缘的辉光强度。 |
+| `grain` | `number` | `0.4` | 颗粒纹理强度。 |
+| `dispersion` | `number` | `0.5` | 色散强度。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-darkroom-develop"></a>
+### Darkroom Develop (`darkroom-develop`) — `DarkroomDevelopOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `softness` | `number` | `0.11` | 显影边缘的柔和程度。 |
+| `safelight` | `number` | `0.65` | 暗房安全灯色调的参与强度。 |
+| `grain` | `number` | `0.5` | 胶片颗粒强度。 |
+| `sheen` | `number` | `0.6` | 显影表面的光泽强度。 |
+| `direction` | `AxisDirection` | `'auto'` | 显影扫过方向；`'auto'` 跟随导航方向。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-prismatic-glass"></a>
+### Prismatic Glass (`prismatic-glass`) — `PrismaticGlassOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `direction` | `PrismaticGlassDirection` | `'auto'` | 折射前沿移动方向；支持 `AxisDirection`。 |
+| `refraction` | `number` | `0.48` | 玻璃带内部的光学位移强度。 |
+| `dispersion` | `number` | `0.32` | 折射边缘的 RGB 光谱分离强度。 |
+| `curvature` | `number` | `0.58` | 移动前沿的程序化弯曲程度。 |
+| `edgeGlow` | `number` | `0.46` | 边缘光和焦散高光强度。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-silk-ribbons"></a>
+### Silk Ribbons (`silk-ribbons`) — `SilkRibbonsOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `direction` | `SilkRibbonsDirection` | `'auto'` | 旧图离场方向，新图从相反方向进入；支持 `AxisDirection`。 |
+| `ribbonCount` | `number` | `44` | 独立绸带数量。 |
+| `curl` | `number` | `0.72` | 绸带横向弯曲和沿长度抖动强度。 |
+| `stagger` | `number` | `0.68` | 各绸带运动顺序的错开/随机程度。 |
+| `sheen` | `number` | `0.62` | 折面阴影和暖色镜面高光强度。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-torn-paper"></a>
+### Torn Paper (`torn-paper`) — `TornPaperOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `tearSeed` | `number` | `1.4` | 控制主撕裂线和细小纸纤维的稳定随机种子。 |
+| `direction` | `TornPaperDirection` | `'auto'` | 撕裂前进方向；支持 `AxisDirection`。 |
+| `layers` | `number` | `2` | 撕裂边缘可见的纸张核心层数。 |
+| `fiberWidth` | `number` | `0.52` | 程序化纸纤维的宽度和最大延伸范围。 |
+| `shadowStrength` | `number` | `0.64` | 撕起纸边投射到下层图片上的阴影强度。 |
+| `curl` | `number` | `0.46` | 翘起纸边的 UV 位移和明暗变化。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-burn-through"></a>
+### Burn Through (`burn-through`) — `BurnThroughOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `origin` | `BurnOrigin` | `'pointer'` | 起燃点：`'center'`、`'pointer'` 或归一化坐标 `readonly [x, y]`。 |
+| `burnWidth` | `number` | `0.42` | 焦黑转场边缘的宽度。 |
+| `charDepth` | `number` | `0.68` | 碳化边缘的强度与延伸范围。 |
+| `roughness` | `number` | `0.58` | 燃烧前沿的不规则程度。 |
+| `smoke` | `number` | `0.35` | 燃烧前沿上方的程序化烟雾量。 |
+| `emberColor` | `string` | `'#db764e'` | 余烬和火星的主颜色。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-impasto-stroke"></a>
+### Impasto Stroke (`impasto-stroke`) — `ImpastoStrokeOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `bristles` | `number` | `70` | 笔刷刷毛细节数量。 |
+| `wetness` | `number` | `0.65` | 湿画颜料的厚重感。 |
+| `gloss` | `number` | `0.7` | 颜料表面光泽强度。 |
+| `bead` | `number` | `0.5` | 颜料边缘堆积/凸起感。 |
+| `direction` | `AxisDirection` | `'auto'` | 笔触扫过方向；`'auto'` 跟随导航方向。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-holo-foil"></a>
+### Holo Foil (`holo-foil`) — `HoloFoilOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `foilWidth` | `number` | `0.16` | 移动箔膜带的宽度。 |
+| `filmDensity` | `number` | `7` | 箔膜纹理密度。 |
+| `glitter` | `number` | `0.55` | 闪粉高光强度。 |
+| `refraction` | `number` | `0.4` | 箔膜的折射/位移强度。 |
+| `edgeLight` | `number` | `0.6` | 箔膜边缘照明强度。 |
+| `direction` | `AxisDirection` | `'auto'` | 箔膜移动方向；`'auto'` 跟随导航方向。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-lenticular-shift"></a>
+### Lenticular Shift (`lenticular-shift`) — `LenticularShiftOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `lensCount` | `number` | `42` | 透镜条纹数量。 |
+| `refraction` | `number` | `0.55` | 条纹透镜的折射强度。 |
+| `glint` | `number` | `0.7` | 条纹移动时的高光强度。 |
+| `sheetSoftness` | `number` | `0.22` | 透镜片边缘的柔和程度。 |
+| `direction` | `AxisDirection` | `'auto'` | 条纹扫过方向；`'auto'` 跟随导航方向。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-zipper-cloth"></a>
+### Zipper Cloth (`zipper-cloth`) — `ZipperClothOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式；拉链路径和褶皱形状由效果固定。 |
+
+<a id="effect-postcard-relay"></a>
+### Postcard Relay (`postcard-relay`) — `PostcardRelayOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 明信片图片适配方式；卡片运动节奏由效果固定。 |
+
+<a id="effect-memory-mosaic"></a>
+### Memory Mosaic (`memory-mosaic`) — `MemoryMosaicOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式；马赛克网格布局由效果固定。 |
+
+<a id="effect-iris-shutter"></a>
+### Iris Shutter (`iris-shutter`) — `IrisShutterOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式；光圈叶片数量和运动由效果固定。 |
+
+<a id="effect-archive-seal"></a>
+### Archive Seal (`archive-seal`) — `ArchiveSealOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式；印章图形和压印运动由效果固定。 |
+
+<a id="effect-contact-sheet"></a>
+### Contact Sheet (`contact-sheet`) — `ContactSheetOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式；联系表格布局由效果固定。 |
+
+<a id="effect-type-aperture"></a>
+### Type Aperture (`type-aperture`) — `TypeApertureOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `word` | `string` | `'NEXT'` | 用作开窗遮罩的文字。 |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式。 |
+
+<a id="effect-particle-shift"></a>
+### Particle Shift (`particle-shift`) — `ParticleShiftOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `particleCount` | `number` | `206976` | 粒子数量；较大的数量需要更多 GPU 资源。 |
+| `particleSize` | `number` | `1` | 粒子基础尺寸。 |
+| `turbulence` | `number` | `1` | 粒子运动的扰动强度。 |
+| `exitDirection` | `ParticleExitDirection \| 'auto'` | `'right'` | 旧图粒子离场方向；支持 `right`、`left`、`up`、`down` 和 `auto`。 |
+| `enterDirection` | `ParticleEnterDirection` | 未设置时取离场方向的反方向 | 新图粒子的进入方向；支持 `right`、`left`、`top`、`bottom`。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-chromatic-dust"></a>
+### Chromatic Dust (`chromatic-dust`) — `ChromaticDustOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `crystalCount` | `number` | `30000` | 彩色晶尘粒子数量。 |
+| `crystalSize` | `number` | `1.45` | 晶尘基础尺寸。 |
+| `density` | `number` | `0.78` | 晶尘的分布密度。 |
+| `turbulence` | `number` | `0.62` | 晶尘运动扰动强度。 |
+| `dispersion` | `number` | `0.56` | 色彩分散强度。 |
+| `direction` | `ChromaticDustDirection` | `'auto'` | `'auto'`、`'right'`、`'left'` 或 `'radial'`。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-fiber-flow"></a>
+### Fiber Flow (`fiber-flow`) — `FiberFlowOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `strandCount` | `number` | `520` | 纤维束数量。 |
+| `segmentsPerStrand` | `number` | `64` | 每束纤维的线段数。 |
+| `width` | `number` | `1.55` | 纤维宽度。 |
+| `density` | `number` | `0.66` | 纤维覆盖密度。 |
+| `curl` | `number` | `0.6` | 纤维弯曲程度。 |
+| `glow` | `number` | `0.64` | 纤维周围的光晕强度。 |
+| `direction` | `FiberFlowDirection` | `'auto'` | `'auto'`、`'right'`、`'left'` 或 `'down'`。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-meteor-wake"></a>
+### Meteor Wake (`meteor-wake`) — `MeteorWakeOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `spread` | `number` | `0.66` | 流星尾迹向周围扩散的幅度。 |
+| `turbulence` | `number` | `0.44` | 尾迹粒子的扰动强度。 |
+| `glow` | `number` | `0.68` | 流星和星光的辉光强度。 |
+| `afterglow` | `number` | `0.58` | 尾迹消散后的余辉强度/持续感。 |
+| `particleCount` | `number` | 设备相关：粗指针设备或 `deviceMemory <= 4` 时 `32768`，其他设备 `65536` | 星光粒子数量；较大的数量需要更多 GPU 资源。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-depth-flip"></a>
+### Depth Flip (`depth-flip`) — `DepthFlipOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `depth` | `number` | `0.72` | 翻转过程中的纵深位移强度。 |
+| `blur` | `number` | `0.72` | 进入/离开屏幕纵深时的虚化强度。 |
+| `stagger` | `number` | `0.18` | 画面区域开始翻转的时间错开量。 |
+| `perspective` | `number` | `2.15` | 透视翻转强度。 |
+| `direction` | `DepthFlipDirection` | `'auto'` | `'auto'`、`'right'`、`'left'`、`'bottom'` 或 `'top'`。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-contour-reveal"></a>
+### Contour Reveal (`contour-reveal`) — `ContourRevealOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `levels` | `number` | `9` | 等高线层级数量。 |
+| `lineInk` | `number` | `0.85` | 等高线墨线强度。 |
+| `relief` | `number` | `0.55` | 地形浮雕明暗强度。 |
+| `fillLag` | `number` | `0.12` | 实色显现相对轮廓线的延迟。 |
+| `directionBias` | `number` | `0.35` | 显影场沿扫过方向的偏置量。 |
+| `direction` | `AxisDirection` | `'auto'` | 等高线扫过方向；`'auto'` 跟随导航方向。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-drowsy-blinds"></a>
+### Drowsy Blinds (`drowsy-blinds`) — `DrowsyBlindsOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式；百叶片数量固定为 10，当前没有其他公开参数。 |
+
+<a id="effect-misregistration"></a>
+### Misregistration (`misregistration`) — `MisregistrationOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `plateSpread` | `number` | `0.72` | RGB 印版错位距离。 |
+| `halftoneScale` | `number` | `155` | 半色调网点网格密度。 |
+| `paperTint` | `string` | `'#eee7d8'` | 半色调暂时显露出的纸张颜色。 |
+| `punch` | `number` | `0.46` | 结尾套印对齐时的缩放强调强度。 |
+| `imageFit` | `VaryloomImageFit` | `'cover'` | 图片适配方式。 |
+
+<a id="effect-vortex-portal"></a>
+### Vortex Portal (`vortex-portal`) — `VortexPortalOptions`
+
+| 参数 | 类型 | 默认值 | 作用 |
+| --- | --- | --- | --- |
+| `twist` | `number` | `0.78` | 旋涡扭曲强度；实现中最小钳制为 `0`。 |
+| `originX` | `number` | `0.54` | 旋涡中心的归一化横坐标；实现中钳制到 `[0.05, 0.95]`。 |
+| `originY` | `number` | `0.49` | 旋涡中心的归一化纵坐标；实现中钳制到 `[0.05, 0.95]`。 |
+| `spinDirection` | `-1 \| 1` | `1` | 旋转方向；`-1` 与 `1` 表示相反方向。 |
+| `imageFit` | `VaryloomImageFit` | `'contain'` | 图片适配方式。 |
+
+每种效果的参数也可作为对应的 TypeScript 类型单独导入。`createVaryloom` 和 React props 上的 `effectOptions` 目前使用通用记录类型；需要在调用处检查具体效果的字段时，可使用 `satisfies`：
+
+```ts
+import type { LiquidLensOptions } from 'varyloom';
+
+const liquidOptions = {
+  dropCount: 12,
+  origin: 'center',
+  imageFit: 'contain',
+} satisfies LiquidLensOptions;
+
+await slider.setEffect('liquid-lens', liquidOptions);
 ```
 
 ## 控制器

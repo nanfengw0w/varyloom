@@ -1,0 +1,45 @@
+/* Project resources and copy-ready examples, in the existing visual language. */
+.brand-header nav { gap: clamp(17px, 1.7vw, 30px); white-space: nowrap; }
+.brand-header .header-resource { color: #d5ff5f; }
+.lab-resource-links { display: flex; align-items: center; gap: 18px; margin-left: auto; font-size: 12px; color: #a7b797; }
+.lab-resource-links a { display: inline-flex; gap: 6px; align-items: center; transition: color .2s; white-space: nowrap; }
+.lab-resource-links a:hover { color: #d5ff5f; }
+.lab-resource-links + .header-actions { margin-left: 0; }
+.example-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin: 30px 0 16px; }
+.framework-picker { display: inline-flex; padding: 4px; border: 1px solid #3b4b2d; border-radius: 8px; background: #10140d; }
+.framework-picker button { padding: 10px 16px; border: 0; border-radius: 5px; background: none; color: #93a47f; font: inherit; font-size: 13px; transition: background .2s, color .2s; }
+.framework-picker button[aria-pressed=true] { background: #d5ff5f; color: #182011; }
+.effect-api-link { display: inline-flex; align-items: center; gap: 8px; color: #d5ff5f; font-size: 12px; }
+.effect-api-link:hover { text-decoration: underline; text-underline-offset: 5px; }
+.framework-guidance { margin: 0 0 20px; max-width: 900px; font-size: 13px; color: #a7b797; line-height: 1.9; }
+.framework-guidance p { margin: 0; }
+.vanilla-setup { display: flex; width: fit-content; max-width: 100%; align-items: center; gap: 18px; margin-top: 13px; padding: 10px 14px; border: 1px solid #3b4b2d; border-radius: 5px; background: #10140d; color: #d5ff5f; }
+.vanilla-setup code { overflow-x: auto; white-space: nowrap; font-size: 12px; }
+.vanilla-setup button { display: grid; place-items: center; border: 0; padding: 5px; background: none; color: inherit; }
+@media (max-width: 1280px) {
+  .site-header { gap: 24px; }
+  .site-header .header-caption { display: none; }
+  .brand-header .header-section-link { display: none; }
+}
+@media (max-width: 900px) {
+  .lab-resource-links { gap: 15px; }
+  .lab-resource-links span { display: none; }
+}
+@media (max-width: 767px) {
+  .brand-header { height: auto; min-height: 106px; padding: 18px 0 11px; flex-wrap: wrap; column-gap: 20px; row-gap: 10px; }
+  .brand-header nav { display: flex; order: 3; width: 100%; justify-content: space-between; gap: 20px; font-size: 11px; }
+  .brand-header nav a { padding: 3px 0; }
+  .brand-header nav a:not(.header-resource) { display: none; }
+  .brand-header-actions { margin-left: auto; }
+  .site-header { padding-left: 16px; padding-right: 16px; gap: 16px; }
+  .lab-resource-links { gap: 14px; }
+  .lab-resource-links a { padding: 6px 0; }
+  .lab-resource-links + .header-actions { gap: 12px; }
+  .example-toolbar { align-items: flex-start; gap: 15px; margin-top: 24px; }
+  .framework-picker button { font-size: 12px; padding: 9px 13px; }
+  .framework-guidance { font-size: 12px; }
+  .effect-api-link { font-size: 11px; }
+}
+@media (max-width: 540px) {
+  .site-header .brand > span { display: none; }
+}
