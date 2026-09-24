@@ -62,7 +62,7 @@ export default function Landing(){
  useEffect(()=>{document.documentElement.lang=lang==='zh'?'zh-CN':'en';document.title=t('varyloom — 让影像，生动起来。','varyloom — Images into motion.');document.querySelector('meta[name="description"]')?.setAttribute('content',t('31 种转场，让每一次变化都有自己的表达。探索 varyloom 的动态影像世界。','31 expressive image transitions. Explore the world of varyloom and make your next frame move.'));},[lang]);
  useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current);},[]);
  const copy=async()=>{
-  let success=false;try{await navigator.clipboard.writeText('npm install varyloom@0.1.0');success=true;}catch{const field=document.createElement('textarea');field.value='npm install varyloom@0.1.0';field.style.cssText='position:fixed;left:-9999px';document.body.appendChild(field);field.select();try{success=document.execCommand('copy');}catch{}field.remove();}
+  let success=false;try{await navigator.clipboard.writeText('npm install varyloom@0.1.1');success=true;}catch{const field=document.createElement('textarea');field.value='npm install varyloom@0.1.1';field.style.cssText='position:fixed;left:-9999px';document.body.appendChild(field);field.select();try{success=document.execCommand('copy');}catch{}field.remove();}
   setCopied(success);setCopyError(!success);if(timer.current)clearTimeout(timer.current);timer.current=setTimeout(()=>setCopied(false),2400);
  };
  return <div ref={root} id="top" className="brand-site" data-language={lang} onClick={event=>{
@@ -85,7 +85,7 @@ export default function Landing(){
   <main>
    <section className="brand-hero" aria-labelledby="hero-title">
     <div className="hero-guideline" aria-hidden="true"/>
-    <div className="hero-kicker"><span className="status-dot"/>{t('为下一幕，创造惊喜。','A little unexpected. A lot of possibility.')}<span className="hero-version">v0.1.0</span></div>
+    <div className="hero-kicker"><span className="status-dot"/>{t('为下一幕，创造惊喜。','A little unexpected. A lot of possibility.')}<span className="hero-version">v0.1.1</span></div>
     <div className="hero-copy">
      <h1 id="hero-title"><span className="headline-mask"><span className="headline-line">{t('让影像，','Images into')}</span></span><span className="headline-mask"><span className="headline-line hero-accent">{t('生动起来。','motion.')}<span className="headline-spark" aria-hidden="true">✳</span></span></span></h1>
      <p className="hero-description">{t('在两帧之间，留一点想象。','Make something happen between frames.')}<br/>{t('用 31 种转场，编织属于你的视觉语言。','31 expressive transitions. An infinite space to play.')}</p>
@@ -127,8 +127,8 @@ export default function Landing(){
    </section>
 
    <section id="start" className="start-section">
-    <div className="start-top"><span>03 / {t('把想象，写进作品','FROM POSSIBILITY TO REALITY')}</span><span>npm / v0.1.0</span></div>
-    <div className="start-main"><div><h2 className="reveal-heading">{t('现在，','Your next')}<br/>{t('轮到你了。','move.')}<span className="start-dot">●</span></h2><p>{t('一个命令，让下一次变化发生。','One command. A whole new way to move.')}</p></div><div className="start-actions"><Bloom className="start-bloom"/><button className="install-command" onClick={copy}><span><span className="command-dollar">$ </span>npm install varyloom@0.1.0</span>{copied?<Check size={20}/>:<Copy size={20}/>}<span className="install-tooltip" role="status">{copied?t('已复制','Copied'):t('复制安装命令','Copy install command')}</span></button>{copyError&&<p role="alert">{t('复制失败，请手动选择上方命令。','Copy failed. Please select the command above.')}</p>}<a className="start-code" href={lab(selected)+'&tab=code'}>{t('查看完整代码示例','See a complete code example')}<ArrowRight size={18}/></a></div></div>
+    <div className="start-top"><span>03 / {t('把想象，写进作品','FROM POSSIBILITY TO REALITY')}</span><span>npm / v0.1.1</span></div>
+    <div className="start-main"><div><h2 className="reveal-heading">{t('现在，','Your next')}<br/>{t('轮到你了。','move.')}<span className="start-dot">●</span></h2><p>{t('一个命令，让下一次变化发生。','One command. A whole new way to move.')}</p></div><div className="start-actions"><Bloom className="start-bloom"/><button className="install-command" onClick={copy}><span><span className="command-dollar">$ </span>npm install varyloom@0.1.1</span>{copied?<Check size={20}/>:<Copy size={20}/>}<span className="install-tooltip" role="status">{copied?t('已复制','Copied'):t('复制安装命令','Copy install command')}</span></button>{copyError&&<p role="alert">{t('复制失败，请手动选择上方命令。','Copy failed. Please select the command above.')}</p>}<a className="start-code" href={lab(selected)+'&tab=code'}>{t('查看完整代码示例','See a complete code example')}<ArrowRight size={18}/></a></div></div>
     <div className="closing-wordmark" aria-hidden="true">varyloom<span>✳</span></div>
     <footer className="brand-footer"><span>© 2026 varyloom</span><span>{t('让变化，自成一景。','Make room for the unexpected.')}</span><a href="#top">{t('回到顶部','Back to top')}<ArrowUpRight size={16}/></a></footer>
    </section>

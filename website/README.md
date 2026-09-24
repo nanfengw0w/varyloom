@@ -4,7 +4,7 @@ The independent bilingual showcase and interactive playground for [Varyloom](htt
 
 **[Open the website](https://nanfengw0w.github.io/varyloom/?lang=en)** · **[打开中文网站](https://nanfengw0w.github.io/varyloom/?lang=zh)**
 
-This private package installs **varyloom@0.1.0 from npm**. It does not import the library's source tree. Core changes under the repository's Unreleased changelog are not included in these demonstrations until a new npm version is published and deliberately adopted here.
+This private package installs **varyloom@0.1.1 from npm**, including the initialization-failure and resource-cleanup fixes. It does not import the library's source tree.
 
 ## Develop
 
