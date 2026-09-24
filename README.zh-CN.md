@@ -12,7 +12,7 @@
 | --- | --- | --- |
 | [![粒子迁移动态预览](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/particle-shift.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=particle-shift) | [![流星尾迹动态预览](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/meteor-wake.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=meteor-wake) | [![记忆拼图动态预览](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/memory-mosaic.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=zh&effect=memory-mosaic) |
 
-演示站独立安装已发布的 `varyloom@0.1.0`，不引用核心库源码。粒子迁移、流星尾迹需要 WebGPU；不支持时演示站会明确显示回退状态。
+演示站独立安装已发布的 `varyloom@0.1.1`，不引用核心库源码。粒子迁移、流星尾迹需要 WebGPU；不支持时演示站会明确显示回退状态。
 
 
 Varyloom 是一套可扩展的图片转场库：31 种内置效果共用一套控制接口，可用于 JavaScript、TypeScript 和 React。从克制的材质与平面设计转场，到 GPU 驱动的粒子转场，都可以在同一个图库里切换。

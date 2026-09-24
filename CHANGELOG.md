@@ -4,11 +4,14 @@ English · [简体中文](./CHANGELOG.zh-CN.md)
 
 All notable changes to Varyloom are recorded here. Unreleased changes are not included in the current npm package.
 
-## Unreleased
+## 0.1.1 — 2026-09-24
+
+Published on [npm](https://www.npmjs.com/package/varyloom/v/0.1.1). Source tag: [`v0.1.1`](https://github.com/nanfengw0w/varyloom/releases/tag/v0.1.1).
 
 ### Fixed
 
 - Release controller resources when initialization fails, including owned images that finish loading after cancellation.
+- Prevent pending initialization from restarting rendering after the controller is destroyed, and complete cleanup even when a custom effect's destroy method throws.
 
 ### Website and documentation
 

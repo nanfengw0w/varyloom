@@ -12,7 +12,7 @@ English · [简体中文](./README.zh-CN.md)
 | --- | --- | --- |
 | [![Particle Shift animated preview](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/particle-shift.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=particle-shift) | [![Meteor Wake animated preview](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/meteor-wake.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=meteor-wake) | [![Memory Mosaic animated preview](https://raw.githubusercontent.com/nanfengw0w/varyloom/main/docs/media/memory-mosaic.gif)](https://nanfengw0w.github.io/varyloom/playground/?lang=en&effect=memory-mosaic) |
 
-The independent showcase installs the published `varyloom@0.1.0` package, without importing core source files. Particle Shift and Meteor Wake require WebGPU; the playground clearly reports when it falls back.
+The independent showcase installs the published `varyloom@0.1.1` package, without importing core source files. Particle Shift and Meteor Wake require WebGPU; the playground clearly reports when it falls back.
 
 
 Image transitions with room to grow. Varyloom brings 31 built-in effects under one controller API for JavaScript, TypeScript, and React—from quiet material and graphic transitions to GPU-driven particles.

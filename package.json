@@ -1,6 +1,6 @@
 {
   "name": "varyloom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "31 extensible image transitions for JavaScript, TypeScript, and React.",
   "type": "module",
   "license": "MIT",
