@@ -4,7 +4,7 @@ import { defineTransition } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -16,7 +16,7 @@ export interface MeltOptions {
   aberration?: number;
   drift?: number;
   overlayColor?: string;
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 const vertexShader = `
@@ -231,7 +231,7 @@ class MeltEffect implements TransitionEffect {
       aberration?: number;
       drift?: number;
       overlayColor?: string;
-      imageFit?: PrismorphImageFit;
+      imageFit?: VaryloomImageFit;
     };
     this.program.uniforms.uProgress.value = frame.progress;
     this.program.uniforms.uTime.value = frame.time;

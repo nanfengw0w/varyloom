@@ -10,30 +10,49 @@ export type BuiltInTransitionName =
   | 'liquid-lens'
   | 'torn-paper'
   | 'chromatic-dust'
-  | 'fiber-flow';
+  | 'fiber-flow'
+  | 'frequency-handoff'
+  | 'flow-morph'
+  | 'darkroom-develop'
+  | 'impasto-stroke'
+  | 'lenticular-shift'
+  | 'holo-foil'
+  | 'contour-reveal'
+  | 'depth-flip'
+  | 'meteor-wake'
+  | 'drowsy-blinds'
+  | 'gummy-squeeze'
+  | 'postcard-relay'
+  | 'zipper-cloth'
+  | 'type-aperture'
+  | 'archive-seal'
+  | 'contact-sheet'
+  | 'vortex-portal'
+  | 'memory-mosaic'
+  | 'iris-shutter';
 export type TransitionName = BuiltInTransitionName | (string & {});
 export type TransitionBackend = 'webgl2' | 'webgpu' | 'ogl' | 'custom';
 export type Direction = -1 | 1;
-export type PrismorphImageFit = 'cover' | 'contain';
+export type VaryloomImageFit = 'cover' | 'contain';
 
-export type PrismorphImageSource = string | Blob | HTMLImageElement | ImageBitmap;
+export type VaryloomImageSource = string | Blob | HTMLImageElement | ImageBitmap;
 
-export interface PrismorphItem<TData = unknown> {
-  image: PrismorphImageSource;
+export interface VaryloomItem<TData = unknown> {
+  image: VaryloomImageSource;
   alt?: string;
   caption?: string;
   data?: TData;
 }
 
-export interface LoadedImage<TData = unknown> extends PrismorphItem<TData> {
+export interface LoadedImage<TData = unknown> extends VaryloomItem<TData> {
   source: HTMLImageElement | ImageBitmap;
   width: number;
   height: number;
   release(): void;
 }
 
-export interface PrismorphOptions<TData = unknown> {
-  items: Array<PrismorphItem<TData>>;
+export interface VaryloomOptions<TData = unknown> {
+  items: Array<VaryloomItem<TData>>;
   effect?: TransitionName;
   duration?: number;
   easing?: string;
@@ -52,7 +71,7 @@ export interface PrismorphOptions<TData = unknown> {
   registry?: TransitionRegistryLike;
 }
 
-export interface ResolvedPrismorphOptions<TData = unknown> extends Omit<PrismorphOptions<TData>, 'effect' | 'duration' | 'easing' | 'startIndex' | 'autoplay' | 'autoplayDelay' | 'loop' | 'draggable' | 'keyboard' | 'pauseOnHover' | 'preload' | 'crossOrigin' | 'dpr' | 'fallbackEffect' | 'effectOptions'> {
+export interface ResolvedVaryloomOptions<TData = unknown> extends Omit<VaryloomOptions<TData>, 'effect' | 'duration' | 'easing' | 'startIndex' | 'autoplay' | 'autoplayDelay' | 'loop' | 'draggable' | 'keyboard' | 'pauseOnHover' | 'preload' | 'crossOrigin' | 'dpr' | 'fallbackEffect' | 'effectOptions'> {
   effect: TransitionName;
   duration: number;
   easing: string;
@@ -121,11 +140,11 @@ export interface TransitionRegistryLike {
   list(): TransitionDefinition[];
 }
 
-export interface PrismorphEventMap<TData = unknown> {
+export interface VaryloomEventMap<TData = unknown> {
   ready: { effect: TransitionName; index: number };
   transitionstart: { from: number; to: number; direction: Direction };
   progress: { from: number; to: number; progress: number };
-  indexchange: { index: number; item: PrismorphItem<TData> };
+  indexchange: { index: number; item: VaryloomItem<TData> };
   transitionend: { index: number };
   effectchange: { effect: TransitionName; requestedEffect: TransitionName };
   fallback: { requestedEffect: TransitionName; fallbackEffect: TransitionName };
@@ -133,12 +152,12 @@ export interface PrismorphEventMap<TData = unknown> {
   destroy: Record<string, never>;
 }
 
-export type PrismorphEventName = keyof PrismorphEventMap;
-export type PrismorphEventListener<TData, TName extends PrismorphEventName> = (
-  payload: PrismorphEventMap<TData>[TName],
+export type VaryloomEventName = keyof VaryloomEventMap;
+export type VaryloomEventListener<TData, TName extends VaryloomEventName> = (
+  payload: VaryloomEventMap<TData>[TName],
 ) => void;
 
-export interface PrismorphController<TData = unknown> {
+export interface VaryloomController<TData = unknown> {
   readonly ready: Promise<void>;
   readonly currentIndex: number;
   readonly effect: TransitionName;
@@ -150,10 +169,10 @@ export interface PrismorphController<TData = unknown> {
   pause(): void;
   seek(progress: number): void;
   setEffect(name: TransitionName, options?: Record<string, unknown>): Promise<void>;
-  setOptions(options: Partial<Omit<PrismorphOptions<TData>, 'items' | 'registry'>>): void;
-  on<TName extends PrismorphEventName>(
+  setOptions(options: Partial<Omit<VaryloomOptions<TData>, 'items' | 'registry'>>): void;
+  on<TName extends VaryloomEventName>(
     name: TName,
-    listener: PrismorphEventListener<TData, TName>,
+    listener: VaryloomEventListener<TData, TName>,
   ): () => void;
   destroy(): void;
 }

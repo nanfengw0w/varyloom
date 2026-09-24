@@ -2,7 +2,7 @@ import { defineTransition } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -28,7 +28,7 @@ export interface RackFocusOptions {
   /** Focus recovery point, a preset or normalized `[x, y]` coordinates. */
   focusPoint?: RackFocusPoint;
   /** How each image is fitted inside the transition viewport. */
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 const fragmentShader = `#version 300 es

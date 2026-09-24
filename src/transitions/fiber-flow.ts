@@ -1,5 +1,5 @@
 import { defineTransition } from '../registry';
-import type { Direction, PrismorphImageFit } from '../types';
+import type { Direction, VaryloomImageFit } from '../types';
 import { WebGpuParticleLayerEffect } from './webgpu-particle-layer';
 
 export type FiberFlowDirection = 'auto' | 'right' | 'left' | 'down';
@@ -12,7 +12,7 @@ export interface FiberFlowOptions {
   curl?: number;
   glow?: number;
   direction?: FiberFlowDirection;
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 function counts(options: Readonly<Record<string, unknown>>): { strands: number; segments: number } {
@@ -322,7 +322,7 @@ export const fiberFlowTransition = defineTransition({
   },
   supported: () => typeof navigator !== 'undefined' && Boolean(navigator.gpu),
   create: () => new WebGpuParticleLayerEffect({
-    label: 'prismorph-fiber-flow',
+    label: 'varyloom-fiber-flow',
     createShader,
     createInstanceData,
     parameters: (options, dpr, direction) => [

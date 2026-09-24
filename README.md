@@ -1,64 +1,36 @@
-# Prismorph
+# Varyloom
 
-Extensible GPU-powered image transitions for the web. Prismorph ships with twelve transitions and one controller API for vanilla JavaScript, TypeScript, and React.
+English · [简体中文](./README.zh-CN.md)
 
-> Status: `0.1.0` review build. This package is not published yet.
+[API reference](./docs/API.md)
 
-## Highlights
+Image transitions with room to grow. Varyloom brings 31 built-in effects under one controller API for JavaScript, TypeScript, and React—from quiet material and graphic transitions to GPU-driven particles.
 
-- `ink-reveal` — WebGL2 ink/noise reveal with a subtle grey-to-final-colour delay.
-- `particle-shift` — WebGPU particle dispersal and independent particle assembly, powered by `wgpu-kit`.
-- `melt` — OGL/GLSL fluid melt with chromatic aberration and pointer drift.
-- `prismatic-glass` — WebGL2 refractive glass front with spectral dispersion and caustic edge light.
-- `silk-ribbons` — WebGL2 curved silk strips with synchronized outgoing and incoming edges.
-- `misregistration` — WebGL2 RGB print plates with temporary halftone registration.
-- `burn-through` — WebGL2 noisy burn reveal with char, ember, smoke, sparks, and a configurable origin.
-- `rack-focus` — WebGL2 focus handoff with defocus, desaturation, exposure breathing, and local focus recovery.
-- `liquid-lens` — WebGL2 refractive droplets that grow and merge into the next image on a linear phase clock.
-- `torn-paper` — WebGL2 directional paper tear with layered cores, procedural fibers, curl, and cast shadow.
-- `chromatic-dust` — WebGPU crystalline image fragments with spectral dispersion and independent outgoing/incoming fields.
-- `fiber-flow` — WebGPU texture-carrying fibers that pull the source apart and weave the target into place.
-- Shared timing, autoplay, keyboard, drag, events, responsive resize, cleanup, and fallback handling.
-- A transition registry designed for adding future effects without changing the controller.
-- ESM and TypeScript declarations, plus an optional React component.
+> **Pre-release:** Varyloom is being prepared for its first npm release. The install commands below are for use **after publication**. This repository contains the core library; the experimental demo pages and their images are not part of the package.
 
-## Install
+### Why Varyloom?
+
+- **One interface, many looks.** Switch effects without rebuilding your gallery or changing navigation code.
+- **Images of different shapes.** Use `imageFit: 'contain'` to show each image in full, or `'cover'` to fill the stage.
+- **A graceful fallback.** When an effect's capability check reports unsupported, Varyloom can select another registered effect.
+- **Built for real interfaces.** Autoplay, drag, keyboard navigation, resize handling, events, reduced-motion support, and cleanup are handled by the controller.
+- **Extensible by design.** Register a custom transition without modifying the controller.
+
+### Install
+
+After Varyloom is published:
 
 ```bash
-npm install prismorph
+npm install varyloom
 ```
 
-The command above is for the eventual published package. During review, install the generated `.tgz` file instead.
+The React entry point is optional. A React application also needs React 18 or newer.
 
-## Vanilla JavaScript
+### Quick start — JavaScript
 
-```ts
-import { createPrismorph } from 'prismorph';
-
-const slider = await createPrismorph(document.querySelector('#slider')!, {
-  items: [
-    { image: '/images/one.jpg', caption: 'One' },
-    { image: '/images/two.jpg', caption: 'Two' },
-    { image: '/images/three.jpg', caption: 'Three' },
-  ],
-  effect: 'ink-reveal',
-  duration: 1.6,
-  autoplay: true,
-  autoplayDelay: 4,
-  effectOptions: {
-    edgeStrength: 0.72,
-    colorLag: 0.07,
-  },
-});
-
-slider.on('indexchange', ({ index, item }) => {
-  console.log(index, item.caption);
-});
-
-slider.next();
+```html
+<div id="slider"></div>
 ```
-
-Give the container an explicit size:
 
 ```css
 #slider {
@@ -67,15 +39,40 @@ Give the container an explicit size:
 }
 ```
 
-## React
+```js
+import { createVaryloom } from 'varyloom';
+
+const slider = await createVaryloom(document.querySelector('#slider'), {
+  items: [
+    { image: '/images/one.jpg', alt: 'First image' },
+    { image: '/images/two.jpg', alt: 'Second image' },
+    { image: '/images/three.jpg', alt: 'Third image' },
+  ],
+  effect: 'ink-reveal',
+  duration: 1.6,
+  effectOptions: { imageFit: 'contain' },
+});
+
+slider.next();
+// Call slider.destroy() when you remove the gallery.
+```
+
+Provide at least two items and give the host element a size. An image source can be a URL, `Blob`, `HTMLImageElement`, or `ImageBitmap`. Remote image servers must allow cross-origin loading for GPU sampling.
+
+### Quick start — React
 
 ```tsx
-import { PrismorphSlider } from 'prismorph/react';
+import { VaryloomSlider } from 'varyloom/react';
+
+const items = [
+  { image: '/images/one.jpg', alt: 'First image' },
+  { image: '/images/two.jpg', alt: 'Second image' },
+];
 
 export function Gallery() {
   return (
-    <div style={{ height: 500 }}>
-      <PrismorphSlider
+    <div style={{ width: '100%', height: 500 }}>
+      <VaryloomSlider
         items={items}
         effect="melt"
         duration={1.1}
@@ -87,135 +84,88 @@ export function Gallery() {
 }
 ```
 
-The component destroys GPU resources, observers, animation frames, timers, and listeners when it unmounts.
+The component releases its controller and GPU resources on unmount. Keep the `items` array stable across renders unless you intend to recreate the gallery.
 
-## Common options
+### The 31 transitions
 
-| Option | Default | Purpose |
-| --- | --- | --- |
-| `items` | required | Two or more image items. A source can be a URL, `Blob`, `HTMLImageElement`, or `ImageBitmap`. |
-| `effect` | `ink-reveal` | Any registered transition name. |
-| `duration` | `1.2` | Transition duration in seconds. |
-| `easing` | `power2.inOut` | GSAP easing string. Simulation-based effects can own their phase easing. |
-| `autoplay` | `false` | Enables automatic navigation. |
-| `autoplayDelay` | `4` | Delay between autoplay transitions, in seconds. |
-| `loop` | `true` | Wraps at the first and last item. |
-| `draggable` | `true` | Enables horizontal drag-to-scrub. |
-| `keyboard` | `true` | Enables left/right arrow navigation when focused. |
-| `dpr` | `2` | Maximum device-pixel ratio used by effects. |
-| `fallbackEffect` | `melt` | Used when a requested backend is unavailable; set `false` to throw instead. |
-| `effectOptions` | `{}` | Options forwarded to the active transition. |
-
-## Built-in effect options
-
-```ts
-import type {
-  BurnThroughOptions,
-  ChromaticDustOptions,
-  FiberFlowOptions,
-  InkRevealOptions,
-  LiquidLensOptions,
-  MeltOptions,
-  MisregistrationOptions,
-  ParticleShiftOptions,
-  PrismaticGlassOptions,
-  RackFocusOptions,
-  SilkRibbonsOptions,
-  TornPaperOptions,
-} from 'prismorph';
-```
-
-| Effect | Options |
+| Family | Effects |
 | --- | --- |
-| `ink-reveal` | `edgeStrength`, `colorLag`, `debugField` |
-| `particle-shift` | `particleCount`, `particleSize`, `turbulence`, `exitDirection`, `enterDirection` |
-| `melt` | `intensity`, `scale`, `aberration`, `drift`, `overlayColor` |
-| `prismatic-glass` | `direction`, `refraction`, `dispersion`, `curvature`, `edgeGlow` |
-| `silk-ribbons` | `direction`, `ribbonCount`, `curl`, `stagger`, `sheen` |
-| `misregistration` | `plateSpread`, `halftoneScale`, `paperTint`, `punch` |
-| `burn-through` | `origin`, `burnWidth`, `charDepth`, `roughness`, `smoke`, `emberColor` |
-| `rack-focus` | `blur`, `desaturation`, `exposureBreath`, `grain`, `focusPoint` |
-| `liquid-lens` | `dropCount`, `refraction`, `surfaceTension`, `ripple`, `dispersion`, `mergeSpeed`, `origin` |
-| `torn-paper` | `tearSeed`, `direction`, `layers`, `fiberWidth`, `shadowStrength`, `curl` |
-| `chromatic-dust` | `crystalCount`, `crystalSize`, `density`, `turbulence`, `dispersion`, `direction` |
-| `fiber-flow` | `strandCount`, `segmentsPerStrand`, `width`, `density`, `curl`, `glow`, `direction` |
+| Essentials & flow · 8 | `ink-reveal`, `melt`, `gummy-squeeze`, `flow-morph`, `rack-focus`, `liquid-lens`, `frequency-handoff`, `darkroom-develop` |
+| Materials & form · 12 | `prismatic-glass`, `silk-ribbons`, `torn-paper`, `burn-through`, `impasto-stroke`, `holo-foil`, `lenticular-shift`, `zipper-cloth`, `drowsy-blinds`, `postcard-relay`, `memory-mosaic`, `iris-shutter` |
+| Graphic design · 5 | `misregistration`, `contour-reveal`, `type-aperture`, `archive-seal`, `contact-sheet` |
+| Particles & light · 4 | `particle-shift`, `chromatic-dust`, `fiber-flow`, `meteor-wake` |
+| Space & perspective · 2 | `depth-flip`, `vortex-portal` |
 
-All ten built-in effects also accept `imageFit: 'cover' | 'contain'`. Directional effects accept `direction: 'auto' | 'right' | 'left' | 'down' | 'up'`; `auto` follows next/previous navigation. Interactive point options accept `'pointer'`, `'center'`, or normalized `[x, y]` coordinates.
+The four effects in **Particles & light** require WebGPU. The others use WebGL/WebGL2 or browser rendering. When an effect's capability check reports unsupported, Varyloom tries `fallbackEffect` (default: `melt`). Set `fallbackEffect: false` to surface an error instead. A runtime initialization failure is still reported as an error, not silently replaced. Choose a fallback supported by your target browsers.
 
-For `particle-shift`, the entry side defaults to the opposite of the exit direction. Its simulation clock remains linear so dispersal and assembly keep their designed separation, while motion and image sampling are normalized for arbitrary container ratios. WebGPU support is checked before the effect mounts.
+Every built-in effect accepts `imageFit: 'contain' | 'cover'` through `effectOptions`. Some effects also expose their own controls—for example, `exitDirection` and `enterDirection` for `particle-shift`, or `intensity`, `aberration`, and `drift` for `melt`. TypeScript users can import the corresponding `*Options` types from `varyloom`.
 
-## Controller
+### Shared options
 
-```ts
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `items` | required | At least two images; each item may carry `alt`, `caption`, or `data`. |
+| `effect` | `ink-reveal` | A built-in or registered transition name. |
+| `duration` | `1.2` | Transition time in seconds. |
+| `easing` | `power2.inOut` | Controller easing; an effect may define its own phase easing. |
+| `effectOptions` | `{}` | Options passed to the active effect. |
+| `autoplay` / `autoplayDelay` | `false` / `4` | Automatic playback and delay in seconds. |
+| `loop` | `true` | Wrap from last to first image and vice versa. |
+| `draggable` / `keyboard` | `true` / `true` | Horizontal drag and focused arrow-key navigation. |
+| `pauseOnHover` | `true` | Pause autoplay while hovered. |
+| `dpr` | `2` | Maximum device-pixel ratio used by effects. |
+| `fallbackEffect` | `melt` | Effect to use if capability checking reports unsupported; `false` disables fallback. |
+
+### Controller and events
+
+```js
 slider.next();
 slider.prev();
 slider.goTo(2);
 slider.seek(0.5);
 slider.play();
 slider.pause();
-await slider.setEffect('particle-shift', { exitDirection: 'right' });
-slider.setOptions({ duration: 2.2, autoplay: false });
+await slider.setEffect('particle-shift', { imageFit: 'contain' });
+slider.setOptions({ duration: 2, autoplay: false });
+
+const unsubscribe = slider.on('indexchange', ({ index, item }) => {
+  console.log(index, item.alt);
+});
+
+unsubscribe();
 slider.destroy();
 ```
 
-Events: `ready`, `transitionstart`, `progress`, `indexchange`, `transitionend`, `effectchange`, `fallback`, `error`, and `destroy`.
+Available events: `ready`, `transitionstart`, `progress`, `indexchange`, `transitionend`, `effectchange`, `fallback`, `error`, and `destroy`. `createVaryloom` resolves after initialization; React exposes the ready controller through `onReady` or a ref.
 
-## Add a transition
+### Add your own transition
 
-The controller is renderer-agnostic. A custom transition only needs the lifecycle below:
+The registry accepts a transition definition with `name`, `backend`, `create`, and the effect lifecycle `init`, `prepare`, `resize`, `render`, `destroy`. Optional `defaults`, `supported`, and `phaseEasing` let the effect own its settings, capability test, and phase clock.
 
 ```ts
-import { defineTransition, registerTransition } from 'prismorph';
+import { defineTransition, registerTransition } from 'varyloom';
 
 const unregister = registerTransition(defineTransition({
   name: 'my-transition',
   backend: 'custom',
-  // Optional: lock the effect's phase clock independently of the slider easing.
-  phaseEasing: 'none',
-  defaults: { strength: 0.5 },
-  supported: () => true,
-  create: () => ({
-    canvas: document.createElement('canvas'),
-    init(context) {
-      context.host.appendChild(this.canvas);
-    },
-    prepare(fromIndex, toIndex, direction) {},
-    resize(width, height, dpr) {},
-    render(frame) {},
-    destroy() {
-      this.canvas.remove();
-    },
-  }),
+  create: () => {
+    const canvas = document.createElement('canvas');
+    return {
+      canvas,
+      init(context) { context.host.appendChild(canvas); },
+      prepare(fromIndex, toIndex, direction) {},
+      resize(width, height, dpr) {},
+      render(frame) {},
+      destroy() { canvas.remove(); },
+    };
+  },
 }));
 
-// unregister() removes it again.
+// Call unregister() when you no longer need this effect.
 ```
 
-`init` receives the preloaded images, host size, DPR, effect options, and an error reporter. `render` receives normalized progress, elapsed time, frame delta, direction, pointer position, and options.
+`render` receives normalized progress, elapsed time, frame delta, direction, pointer position, and merged effect options.
 
-## Browser requirements
+### Accessibility, support, and license
 
-- `ink-reveal`: WebGL2.
-- `melt`: WebGL.
-- `particle-shift`: WebGPU. If unavailable, Prismorph uses `fallbackEffect`.
-- `prismatic-glass`: WebGL2.
-- `silk-ribbons`: WebGL2.
-- `misregistration`: WebGL2.
-- `burn-through`: WebGL2.
-- `rack-focus`: WebGL2.
-- `liquid-lens`: WebGL2.
-- `torn-paper`: WebGL2.
-- `chromatic-dust`: WebGPU. If unavailable, Prismorph uses `fallbackEffect`.
-- `fiber-flow`: WebGPU. If unavailable, Prismorph uses `fallbackEffect`.
-
-Cross-origin images must return appropriate CORS headers. For accessibility, reduced-motion preferences shorten transitions automatically.
-
-## Local review commands
-
-```bash
-npm run build:prismorph
-npm run test:prismorph
-npm run pack:prismorph
-```
-
-The last command creates a local tarball only. It does not publish or authenticate with npm.
+Varyloom shortens transitions when the user prefers reduced motion. Supply useful `alt` text for each item, and provide your own visible navigation controls when your design needs them. For GPU effects, verify WebGL/WebGPU and image CORS support in your target browsers. Licensed under MIT.

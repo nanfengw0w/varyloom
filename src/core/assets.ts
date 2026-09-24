@@ -1,6 +1,6 @@
-import type { LoadedImage, PrismorphItem, PrismorphImageSource } from '../types';
+import type { LoadedImage, VaryloomItem, VaryloomImageSource } from '../types';
 
-function isImageBitmap(value: PrismorphImageSource): value is ImageBitmap {
+function isImageBitmap(value: VaryloomImageSource): value is ImageBitmap {
   return typeof ImageBitmap !== 'undefined' && value instanceof ImageBitmap;
 }
 
@@ -32,7 +32,7 @@ async function loadHtmlImage(
 }
 
 async function loadSource(
-  source: PrismorphImageSource,
+  source: VaryloomImageSource,
   crossOrigin: '' | 'anonymous' | 'use-credentials',
 ): Promise<{ source: HTMLImageElement | ImageBitmap; owned: boolean }> {
   if (typeof source === 'string' || source instanceof HTMLImageElement) {
@@ -44,7 +44,7 @@ async function loadSource(
 }
 
 export async function loadItems<TData>(
-  items: Array<PrismorphItem<TData>>,
+  items: Array<VaryloomItem<TData>>,
   crossOrigin: '' | 'anonymous' | 'use-credentials',
 ): Promise<Array<LoadedImage<TData>>> {
   return Promise.all(items.map(async (item) => {

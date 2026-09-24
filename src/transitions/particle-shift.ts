@@ -4,7 +4,7 @@ import { defineTransition } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -20,7 +20,7 @@ export interface ParticleShiftOptions {
   exitDirection?: ParticleExitDirection | 'auto';
   /** Defaults to the side opposite exitDirection. */
   enterDirection?: ParticleEnterDirection;
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 type ExitDirection = ParticleExitDirection;
@@ -49,7 +49,7 @@ const OPPOSITE_ENTER: Record<ExitDirection, EnterDirection> = {
 
 function createComputeKernel() {
   return elementKernel({
-    name: 'prismorph-particle-shift',
+    name: 'varyloom-particle-shift',
     state: { pos: 'vec2f', vel: 'vec2f' },
     inputs: { home: 'vec2f', seeds: 'f32' },
     uniforms: {
@@ -492,7 +492,7 @@ class ParticleShiftEffect implements TransitionEffect {
 
   private createRenderResources(): void {
     this.renderUniformBuffer = this.device.createBuffer({
-      label: 'prismorph-particle-uniforms',
+      label: 'varyloom-particle-uniforms',
       size: 80,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
@@ -504,7 +504,7 @@ class ParticleShiftEffect implements TransitionEffect {
       addressModeV: 'clamp-to-edge',
     });
     this.bindGroupLayout = this.device.createBindGroupLayout({
-      label: 'prismorph-particle-layout',
+      label: 'varyloom-particle-layout',
       entries: [
         { binding: 0, visibility: GPUShaderStage.VERTEX, buffer: { type: 'read-only-storage' } },
         { binding: 1, visibility: GPUShaderStage.VERTEX, buffer: { type: 'read-only-storage' } },
@@ -522,7 +522,7 @@ class ParticleShiftEffect implements TransitionEffect {
     this.textures = [];
     for (const item of this.items) {
       const texture = this.device.createTexture({
-        label: item.caption || item.alt || 'Prismorph image',
+        label: item.caption || item.alt || 'Varyloom image',
         size: [item.width, item.height, 1],
         format: 'rgba8unorm',
         usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
@@ -537,7 +537,7 @@ class ParticleShiftEffect implements TransitionEffect {
   }
 
   private async createPipelines(): Promise<void> {
-    const module = this.device.createShaderModule({ label: 'prismorph-particle-shader', code: renderShader });
+    const module = this.device.createShaderModule({ label: 'varyloom-particle-shader', code: renderShader });
     const diagnostics = await module.getCompilationInfo();
     const errors = diagnostics.messages.filter((message) => message.type === 'error');
     if (errors.length) {
@@ -545,14 +545,14 @@ class ParticleShiftEffect implements TransitionEffect {
     }
     const layout = this.device.createPipelineLayout({ bindGroupLayouts: [this.bindGroupLayout] });
     this.planePipeline = await this.device.createRenderPipelineAsync({
-      label: 'prismorph-particle-plane',
+      label: 'varyloom-particle-plane',
       layout,
       vertex: { module, entryPoint: 'planeVertex' },
       fragment: { module, entryPoint: 'planeFragment', targets: [{ format: this.format }] },
       primitive: { topology: 'triangle-list' },
     });
     this.particlePipeline = await this.device.createRenderPipelineAsync({
-      label: 'prismorph-particle-billboards',
+      label: 'varyloom-particle-billboards',
       layout,
       vertex: { module, entryPoint: 'particleVertex' },
       fragment: {
@@ -576,7 +576,7 @@ class ParticleShiftEffect implements TransitionEffect {
     this.elapsed = 0;
     this.resetBuffers();
     this.bindGroup = this.device.createBindGroup({
-      label: `prismorph-particle-pair-${fromIndex}-${toIndex}`,
+      label: `varyloom-particle-pair-${fromIndex}-${toIndex}`,
       layout: this.bindGroupLayout,
       entries: [
         { binding: 0, resource: { buffer: this.positionBuffer.gpuBuffer } },
@@ -633,7 +633,7 @@ class ParticleShiftEffect implements TransitionEffect {
     const options = frame.options as {
       turbulence?: number;
       particleSize?: number;
-      imageFit?: PrismorphImageFit;
+      imageFit?: VaryloomImageFit;
     };
     const directions = this.resolveDirections(frame);
     if (frame.active) {
@@ -676,7 +676,7 @@ class ParticleShiftEffect implements TransitionEffect {
       sourceItem.width, sourceItem.height, targetItem.width, targetItem.height,
     ]));
 
-    const encoder = this.device.createCommandEncoder({ label: 'prismorph-particle-frame' });
+    const encoder = this.device.createCommandEncoder({ label: 'varyloom-particle-frame' });
     const pass = encoder.beginRenderPass({
       colorAttachments: [{
         view: this.context.getCurrentTexture().createView(),

@@ -5,12 +5,12 @@ import { transitionRegistry } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphController,
-  PrismorphEventListener,
-  PrismorphEventMap,
-  PrismorphEventName,
-  PrismorphOptions,
-  ResolvedPrismorphOptions,
+  VaryloomController,
+  VaryloomEventListener,
+  VaryloomEventMap,
+  VaryloomEventName,
+  VaryloomOptions,
+  ResolvedVaryloomOptions,
   TransitionDefinition,
   TransitionEffect,
   TransitionName,
@@ -33,17 +33,17 @@ const DEFAULT_OPTIONS = {
   dpr: 2,
   fallbackEffect: 'melt',
   effectOptions: {},
-} satisfies Omit<ResolvedPrismorphOptions, 'items'>;
+} satisfies Omit<ResolvedVaryloomOptions, 'items'>;
 
-type ListenerMap = Map<PrismorphEventName, Set<(payload: unknown) => void>>;
+type ListenerMap = Map<VaryloomEventName, Set<(payload: unknown) => void>>;
 
-export class Prismorph<TData = unknown> implements PrismorphController<TData> {
+export class Varyloom<TData = unknown> implements VaryloomController<TData> {
   readonly ready: Promise<void>;
 
   private readonly container: HTMLElement;
   private readonly host: HTMLDivElement;
   private readonly registry: TransitionRegistryLike;
-  private options: ResolvedPrismorphOptions<TData>;
+  private options: ResolvedVaryloomOptions<TData>;
   private images: Array<LoadedImage<TData>> = [];
   private activeEffect?: TransitionEffect<TData>;
   private activeDefinition?: TransitionDefinition<TData>;
@@ -73,10 +73,10 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
   private listeners: ListenerMap = new Map();
   private reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  constructor(container: HTMLElement, options: PrismorphOptions<TData>) {
-    if (!(container instanceof HTMLElement)) throw new TypeError('Prismorph requires an HTMLElement container.');
+  constructor(container: HTMLElement, options: VaryloomOptions<TData>) {
+    if (!(container instanceof HTMLElement)) throw new TypeError('Varyloom requires an HTMLElement container.');
     if (!Array.isArray(options.items) || options.items.length < 2) {
-      throw new Error('Prismorph requires at least two image items.');
+      throw new Error('Varyloom requires at least two image items.');
     }
 
     this.container = container;
@@ -88,7 +88,7 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
     this.targetIndex = this._currentIndex;
 
     this.host = document.createElement('div');
-    this.host.dataset.prismorph = '';
+    this.host.dataset.varyloom = '';
     Object.assign(this.host.style, {
       position: 'relative',
       width: '100%',
@@ -121,7 +121,7 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
     return this.transitionActive || this.preparing;
   }
 
-  private resolveOptions(options: PrismorphOptions<TData>): ResolvedPrismorphOptions<TData> {
+  private resolveOptions(options: VaryloomOptions<TData>): ResolvedVaryloomOptions<TData> {
     return {
       ...DEFAULT_OPTIONS,
       ...options,
@@ -130,7 +130,7 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
       dpr: Math.max(1, options.dpr ?? DEFAULT_OPTIONS.dpr),
       duration: Math.max(0, options.duration ?? DEFAULT_OPTIONS.duration),
       autoplayDelay: Math.max(0.1, options.autoplayDelay ?? DEFAULT_OPTIONS.autoplayDelay),
-    } as ResolvedPrismorphOptions<TData>;
+    } as ResolvedVaryloomOptions<TData>;
   }
 
   private async initialize(): Promise<void> {
@@ -160,7 +160,7 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
 
   private async resolveDefinition(requestedName: TransitionName): Promise<TransitionDefinition<TData>> {
     const requested = this.registry.get(requestedName) as TransitionDefinition<TData> | undefined;
-    if (!requested) throw new Error(`Unknown Prismorph transition: "${requestedName}".`);
+    if (!requested) throw new Error(`Unknown Varyloom transition: "${requestedName}".`);
     if (!requested.supported || await requested.supported()) return requested;
 
     const fallbackName = this.options.fallbackEffect;
@@ -403,7 +403,7 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
     await this.mountEffect(name, options);
   }
 
-  setOptions(options: Partial<Omit<PrismorphOptions<TData>, 'items' | 'registry'>>): void {
+  setOptions(options: Partial<Omit<VaryloomOptions<TData>, 'items' | 'registry'>>): void {
     const previousEffect = this.requestedEffectName;
     this.options = this.resolveOptions({ ...this.options, ...options, items: this.options.items });
     this.host.style.touchAction = this.options.draggable ? 'pan-y' : 'auto';
@@ -421,9 +421,9 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
     this.scheduleAutoplay();
   }
 
-  on<TName extends PrismorphEventName>(
+  on<TName extends VaryloomEventName>(
     name: TName,
-    listener: PrismorphEventListener<TData, TName>,
+    listener: VaryloomEventListener<TData, TName>,
   ): () => void {
     let listeners = this.listeners.get(name);
     if (!listeners) {
@@ -436,9 +436,9 @@ export class Prismorph<TData = unknown> implements PrismorphController<TData> {
     return () => listeners?.delete(untypedListener);
   }
 
-  private emit<TName extends PrismorphEventName>(
+  private emit<TName extends VaryloomEventName>(
     name: TName,
-    payload: PrismorphEventMap<TData>[TName],
+    payload: VaryloomEventMap<TData>[TName],
   ): void {
     const listeners = this.listeners.get(name);
     listeners?.forEach((listener) => listener(payload));

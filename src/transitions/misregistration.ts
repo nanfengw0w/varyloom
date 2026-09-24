@@ -2,7 +2,7 @@ import { defineTransition } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -23,7 +23,7 @@ export interface MisregistrationOptions {
   /** Strength of the final print-registration scale punch. */
   punch?: number;
   /** How each image is fitted inside the transition viewport. */
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 const fragmentShader = `#version 300 es

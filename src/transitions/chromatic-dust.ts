@@ -1,5 +1,5 @@
 import { defineTransition } from '../registry';
-import type { Direction, PrismorphImageFit } from '../types';
+import type { Direction, VaryloomImageFit } from '../types';
 import { WebGpuParticleLayerEffect } from './webgpu-particle-layer';
 
 export type ChromaticDustDirection = 'auto' | 'right' | 'left' | 'radial';
@@ -11,7 +11,7 @@ export interface ChromaticDustOptions {
   turbulence?: number;
   dispersion?: number;
   direction?: ChromaticDustDirection;
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 const shader = /* wgsl */ `
@@ -288,7 +288,7 @@ export const chromaticDustTransition = defineTransition({
   },
   supported: () => typeof navigator !== 'undefined' && Boolean(navigator.gpu),
   create: () => new WebGpuParticleLayerEffect({
-    label: 'prismorph-chromatic-dust',
+    label: 'varyloom-chromatic-dust',
     createShader: () => shader,
     createInstanceData,
     parameters: (options, dpr, direction) => [

@@ -2,7 +2,7 @@ import { defineTransition } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -31,7 +31,7 @@ export interface TornPaperOptions {
   /** Amount of UV displacement and shading on the lifted paper lips. */
   curl?: number;
   /** How each image is fitted inside the transition viewport. */
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 const fragmentShader = `#version 300 es

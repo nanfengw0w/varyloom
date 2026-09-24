@@ -2,7 +2,7 @@ import { defineTransition } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -30,7 +30,7 @@ export interface BurnThroughOptions {
   /** Main glow colour used by embers and sparks. */
   emberColor?: string;
   /** How each image is fitted inside the transition viewport. */
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
 }
 
 const fragmentShader = `#version 300 es

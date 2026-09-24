@@ -7,37 +7,37 @@ import {
   type HTMLAttributes,
 } from 'react';
 
-import { createPrismorph } from './index';
+import { createVaryloom } from './index';
 import type {
-  PrismorphController,
-  PrismorphEventMap,
-  PrismorphOptions,
+  VaryloomController,
+  VaryloomEventMap,
+  VaryloomOptions,
 } from './types';
 
-export interface PrismorphSliderProps<TData = unknown>
+export interface VaryloomSliderProps<TData = unknown>
   extends Omit<
       HTMLAttributes<HTMLDivElement>,
       'onError' | 'draggable' | 'onTransitionStart' | 'onTransitionEnd'
     >,
-    PrismorphOptions<TData> {
-  onReady?: (controller: PrismorphController<TData>) => void;
-  onIndexChange?: (payload: PrismorphEventMap<TData>['indexchange']) => void;
-  onTransitionStart?: (payload: PrismorphEventMap<TData>['transitionstart']) => void;
-  onTransitionEnd?: (payload: PrismorphEventMap<TData>['transitionend']) => void;
-  onEffectChange?: (payload: PrismorphEventMap<TData>['effectchange']) => void;
-  onFallback?: (payload: PrismorphEventMap<TData>['fallback']) => void;
+    VaryloomOptions<TData> {
+  onReady?: (controller: VaryloomController<TData>) => void;
+  onIndexChange?: (payload: VaryloomEventMap<TData>['indexchange']) => void;
+  onTransitionStart?: (payload: VaryloomEventMap<TData>['transitionstart']) => void;
+  onTransitionEnd?: (payload: VaryloomEventMap<TData>['transitionend']) => void;
+  onEffectChange?: (payload: VaryloomEventMap<TData>['effectchange']) => void;
+  onFallback?: (payload: VaryloomEventMap<TData>['fallback']) => void;
   onError?: (error: Error) => void;
 }
 
 function setForwardedRef<TData>(
-  ref: ForwardedRef<PrismorphController<TData>>,
-  value: PrismorphController<TData> | null,
+  ref: ForwardedRef<VaryloomController<TData>>,
+  value: VaryloomController<TData> | null,
 ): void {
   if (typeof ref === 'function') ref(value);
   else if (ref) ref.current = value;
 }
 
-function PrismorphSliderInner<TData = unknown>(
+function VaryloomSliderInner<TData = unknown>(
   {
     items,
     effect,
@@ -66,11 +66,11 @@ function PrismorphSliderInner<TData = unknown>(
     className,
     style,
     ...elementProps
-  }: PrismorphSliderProps<TData>,
-  forwardedRef: ForwardedRef<PrismorphController<TData>>,
+  }: VaryloomSliderProps<TData>,
+  forwardedRef: ForwardedRef<VaryloomController<TData>>,
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const controllerRef = useRef<PrismorphController<TData> | null>(null);
+  const controllerRef = useRef<VaryloomController<TData> | null>(null);
   const callbacksRef = useRef({
     onReady,
     onIndexChange,
@@ -93,10 +93,10 @@ function PrismorphSliderInner<TData = unknown>(
   useEffect(() => {
     if (!containerRef.current) return undefined;
     let disposed = false;
-    let controller: PrismorphController<TData> | undefined;
+    let controller: VaryloomController<TData> | undefined;
     const unsubscribe: Array<() => void> = [];
 
-    void createPrismorph(containerRef.current, {
+    void createVaryloom(containerRef.current, {
       items,
       effect,
       duration,
@@ -188,6 +188,6 @@ function PrismorphSliderInner<TData = unknown>(
   return <div ref={containerRef} className={className} style={mergedStyle} {...elementProps} />;
 }
 
-export const PrismorphSlider = forwardRef(PrismorphSliderInner) as <TData = unknown>(
-  props: PrismorphSliderProps<TData> & { ref?: ForwardedRef<PrismorphController<TData>> },
-) => ReturnType<typeof PrismorphSliderInner>;
+export const VaryloomSlider = forwardRef(VaryloomSliderInner) as <TData = unknown>(
+  props: VaryloomSliderProps<TData> & { ref?: ForwardedRef<VaryloomController<TData>> },
+) => ReturnType<typeof VaryloomSliderInner>;

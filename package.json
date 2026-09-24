@@ -1,9 +1,17 @@
 {
-  "name": "prismorph",
+  "name": "varyloom",
   "version": "0.1.0",
-  "description": "Extensible GPU-powered image transitions for the web.",
+  "description": "31 extensible image transitions for JavaScript, TypeScript, and React.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nanfengw0w/varyloom.git"
+  },
+  "homepage": "https://github.com/nanfengw0w/varyloom#readme",
+  "bugs": {
+    "url": "https://github.com/nanfengw0w/varyloom/issues"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,6 +33,11 @@
   "files": [
     "dist",
     "README.md",
+    "README.zh-CN.md",
+    "docs/API.md",
+    "docs/API.zh-CN.md",
+    "CHANGELOG.md",
+    "CHANGELOG.zh-CN.md",
     "LICENSE"
   ],
   "sideEffects": false,
@@ -59,11 +72,14 @@
   },
   "keywords": [
     "image-transition",
+    "image-gallery",
+    "transition-effects",
     "webgl",
     "webgpu",
     "shader",
     "slider",
     "animation",
+    "typescript",
     "react"
   ]
 }

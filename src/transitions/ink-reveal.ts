@@ -2,7 +2,7 @@ import { defineTransition } from '../registry';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -13,7 +13,7 @@ export interface InkRevealOptions {
   /** Delay, in seconds, before the revealed pixels reach their final colour. */
   colorLag?: number;
   /** How each image is fitted inside the transition viewport. */
-  imageFit?: PrismorphImageFit;
+  imageFit?: VaryloomImageFit;
   /** Shows the procedural reveal field for effect tuning. */
   debugField?: boolean;
 }
@@ -289,7 +289,7 @@ class InkRevealEffect implements TransitionEffect {
       edgeStrength?: number;
       colorLag?: number;
       debugField?: boolean;
-      imageFit?: PrismorphImageFit;
+      imageFit?: VaryloomImageFit;
     };
     const current = this.items[this.fromIndex];
     const next = this.items[this.toIndex];

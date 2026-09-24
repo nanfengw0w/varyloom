@@ -38,7 +38,7 @@ describe('TransitionRegistry', () => {
 });
 
 describe('built-in transitions', () => {
-  it('exposes all twelve stable transition names', () => {
+  it('exposes all thirty-one stable transition names', () => {
     expect(builtInTransitions.map(({ name }) => name)).toEqual([
       'ink-reveal',
       'particle-shift',
@@ -52,6 +52,25 @@ describe('built-in transitions', () => {
       'torn-paper',
       'chromatic-dust',
       'fiber-flow',
+      'frequency-handoff',
+      'flow-morph',
+      'darkroom-develop',
+      'impasto-stroke',
+      'lenticular-shift',
+      'holo-foil',
+      'contour-reveal',
+      'depth-flip',
+      'meteor-wake',
+      'drowsy-blinds',
+      'gummy-squeeze',
+      'postcard-relay',
+      'zipper-cloth',
+      'type-aperture',
+      'archive-seal',
+      'contact-sheet',
+      'vortex-portal',
+      'memory-mosaic',
+      'iris-shutter',
     ]);
   });
 
@@ -63,6 +82,25 @@ describe('built-in transitions', () => {
       'torn-paper',
       'chromatic-dust',
       'fiber-flow',
+      'frequency-handoff',
+      'flow-morph',
+      'darkroom-develop',
+      'impasto-stroke',
+      'lenticular-shift',
+      'holo-foil',
+      'contour-reveal',
+      'depth-flip',
+      'meteor-wake',
+      'drowsy-blinds',
+      'gummy-squeeze',
+      'postcard-relay',
+      'zipper-cloth',
+      'type-aperture',
+      'archive-seal',
+      'contact-sheet',
+      'vortex-portal',
+      'memory-mosaic',
+      'iris-shutter',
     ];
     for (const name of linearEffects) {
       const transition = builtInTransitions.find((candidate) => candidate.name === name);

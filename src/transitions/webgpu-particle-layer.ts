@@ -3,7 +3,7 @@ import { Buffer, GpuContext } from 'wgpu-kit';
 import type {
   Direction,
   LoadedImage,
-  PrismorphImageFit,
+  VaryloomImageFit,
   TransitionEffect,
   TransitionEffectContext,
   TransitionFrame,
@@ -189,7 +189,7 @@ export class WebGpuParticleLayerEffect implements TransitionEffect {
       this.aspect, frame.progress, this.canvas.width, this.canvas.height,
       this.elapsed, parameters[0] ?? 0, parameters[1] ?? 0, parameters[2] ?? 0,
       parameters[3] ?? 0, parameters[4] ?? 0,
-      (frame.options.imageFit as PrismorphImageFit | undefined) === 'contain' ? 1 : 0,
+      (frame.options.imageFit as VaryloomImageFit | undefined) === 'contain' ? 1 : 0,
       this.instanceCount,
       this.items[this.fromIndex].width, this.items[this.fromIndex].height, 0, 0,
       this.items[this.toIndex].width, this.items[this.toIndex].height, 0, 0,
